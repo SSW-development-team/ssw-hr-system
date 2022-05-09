@@ -1,0 +1,40 @@
+version: "3"
+services:
+  front:
+    image: node:16
+    # volumes:
+    #   - ./front:/usr/src
+    #   - front_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
+    # working_dir: "/usr/src"
+    # command: sh -c "yarn install && yarn start"
+    # ports:
+    #   - "80:3000"
+    # environment:
+    #   REACT_APP_AUTH0_AUDIENCE: $AUTH0_AUDIENCE
+    #   REACT_APP_AUTH0_CLIENT_ID: $AUTH0_FRONT_CLIENT_ID
+    #   REACT_APP_AUTH0_DOMAIN: $AUTH0_DOMAIN
+    #   REACT_APP_SERVER_URL: "http://localhost:3000"
+  api:
+    image: node:14
+    # hostname: api-container
+    # volumes:
+    #   - ./api/:/usr/src/
+    #   - api_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
+    # working_dir: "/usr/src"
+    # ports:
+    #   - "3000:3000"
+    # environment:
+    #   AUTH0_AUDIENCE: $AUTH0_AUDIENCE
+    #   AUTH0_BACK_CLIENT_ID: $AUTH0_BACK_CLIENT_ID
+    #   AUTH0_BACK_CLIENT_SECRET: $AUTH0_BACK_CLIENT_SECRET
+    #   AUTH0_DOMAIN: $AUTH0_DOMAIN
+    #   AUTH0_FRONT_CLIENT_ID: $AUTH0_FRONT_CLIENT_ID
+    #   AUTH0_FRONT_CLIENT_SECRET: $AUTH0_FRONT_CLIENT_SECRET
+    #   CLIENT_ORIGIN_URL: "http://localhost"
+    #   TWITTER_BEARER_TOKEN: $TWITTER_BEARER_TOKEN
+    #   TWITTER_CONSUMER_KEY: $TWITTER_CONSUMER_KEY
+    #   TWITTER_CONSUMER_SECRET: $TWITTER_CONSUMER_SECRET
+    # command: sh -c "yarn install && yarn dev"
+volumes:
+  front_modules:
+  api_modules:
