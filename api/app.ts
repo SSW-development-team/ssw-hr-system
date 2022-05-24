@@ -6,6 +6,7 @@ import logger from 'morgan';
 import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
+import func from './routes/bot';
 
 import router from './routes/router';
 // envファイルの読み込み
@@ -40,3 +41,5 @@ app.use((err: any, req: Express.Request, res: Express.Response) => {
 
 module.exports = app;
 export default app;
+
+func();
