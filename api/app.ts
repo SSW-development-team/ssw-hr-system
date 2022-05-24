@@ -16,7 +16,7 @@ const app = Express();
 // ミドルウェア設定
 app.use(logger('dev'));
 app.use(helmet());
-app.use(cors({ origin: process.env.CLIENT_ORIGIN_URL }));
+// app.use(cors({ origin: process.env.CLIENT_ORIGIN_URL }));
 app.use(Express.json());
 app.use(Express.urlencoded({ extended: true }));
 app.use(compression()); // gzip圧縮して返す
