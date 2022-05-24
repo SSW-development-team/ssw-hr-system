@@ -7,7 +7,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 
-import usersRouter from './routes/users';
+import router from './routes/router';
 // envファイルの読み込み
 dotenv.config();
 
@@ -22,7 +22,7 @@ app.use(Express.urlencoded({ extended: true }));
 app.use(compression()); // gzip圧縮して返す
 
 // apiルータへ
-app.use('/', usersRouter);
+app.use('/', router);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));
