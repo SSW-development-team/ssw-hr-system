@@ -14,6 +14,7 @@
     "outDir": "./dist",
     "sourceMap": true,
     "target": "ES2019",
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "emitDecoratorMetadata": true
   }
 }

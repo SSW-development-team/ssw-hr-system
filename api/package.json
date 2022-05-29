@@ -4,19 +4,21 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --poll ./bin/www",
-    "start": "ts-node ./bin/www",
+    "dev": "ts-node-dev --poll ./src/bin/www",
+    "start": "ts-node ./src/bin/www",
     "build": "tsc"
   },
   "dependencies": {
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "dayjs": "^1.11.2",
     "discord.js": "^13.7.0",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
     "helmet": "^5.1.0",
     "http-errors": "^2.0.0",
     "morgan": "^1.10.0",
+    "mysql2": "^2.3.3",
     "reflect-metadata": "^0.1.13",
     "ts-node": "^10.8.0",
     "typeorm": "^0.3.6",

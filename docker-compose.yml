@@ -23,6 +23,8 @@ services:
     ports:
       - "3000:3000"
     command: sh -c "yarn && yarn dev"
+    depends_on:
+      - db
   db:
     image: mysql:8
     container_name: db-container
@@ -33,7 +35,7 @@ services:
       TZ: "Asia/Tokyo"
     volumes:
       - ./db/data:/var/lib/mysql #データ永続化
-      # - ./db/sql:/docker-entrypoint-initdb.d #起動時sqlフォルダ内のsqlファイルを実行
+      - ./db/sql:/docker-entrypoint-initdb.d #起動時sqlフォルダ内のsqlファイルを実行
   phpmyadmin:
     image: phpmyadmin #fpmやalpineタグは別途httpサーバが必要
     container_name: phpmyadmin
