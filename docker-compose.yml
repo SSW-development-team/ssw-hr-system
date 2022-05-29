@@ -15,26 +15,45 @@ services:
     #   REACT_APP_AUTH0_DOMAIN: $AUTH0_DOMAIN
     #   REACT_APP_SERVER_URL: "http://localhost:3000"
   api:
-    image: node:14
-    # hostname: api-container
-    # volumes:
-    #   - ./api/:/usr/src/
-    #   - api_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
-    # working_dir: "/usr/src"
-    # ports:
-    #   - "3000:3000"
-    # environment:
-    #   AUTH0_AUDIENCE: $AUTH0_AUDIENCE
-    #   AUTH0_BACK_CLIENT_ID: $AUTH0_BACK_CLIENT_ID
-    #   AUTH0_BACK_CLIENT_SECRET: $AUTH0_BACK_CLIENT_SECRET
-    #   AUTH0_DOMAIN: $AUTH0_DOMAIN
-    #   AUTH0_FRONT_CLIENT_ID: $AUTH0_FRONT_CLIENT_ID
-    #   AUTH0_FRONT_CLIENT_SECRET: $AUTH0_FRONT_CLIENT_SECRET
-    #   CLIENT_ORIGIN_URL: "http://localhost"
-    #   TWITTER_BEARER_TOKEN: $TWITTER_BEARER_TOKEN
-    #   TWITTER_CONSUMER_KEY: $TWITTER_CONSUMER_KEY
-    #   TWITTER_CONSUMER_SECRET: $TWITTER_CONSUMER_SECRET
-    # command: sh -c "yarn install && yarn dev"
+    image: node:16
+    volumes:
+      - ./api/:/usr/src/
+      - api_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
+    working_dir: "/usr/src"
+    ports:
+      - "3000:3000"
+    command: sh -c "yarn && yarn dev"
+  db:
+    image: mysql:8
+    container_name: db-container
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: docker
+      TZ: "Asia/Tokyo"
+    volumes:
+      - ./db/data:/var/lib/mysql #データ永続化
+      # - ./db/sql:/docker-entrypoint-initdb.d #起動時sqlフォルダ内のsqlファイルを実行
+  phpmyadmin:
+    image: phpmyadmin #fpmやalpineタグは別途httpサーバが必要
+    container_name: phpmyadmin
+    environment:
+      - PMA_ARBITRARY=1
+    ports:
+      - 8080:80
+    volumes:
+      - "./phpmyadmin:/sessions"
+    depends_on:
+      - db
+  swagger-ui:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8000:8080"
+    volumes:
+      # - ./API.yaml:/usr/share/nginx/html/sample.yaml
+        - ./API.yaml:/usr/share/nginx/html/API.yaml
+    environment:
+      API_URL: API.yaml
 volumes:
   front_modules:
   api_modules:
