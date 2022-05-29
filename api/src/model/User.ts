@@ -20,7 +20,7 @@ export default class User {
   @Column({ default: '' })
   comment?: string;
 
-  @ManyToMany(() => Department)
+  @ManyToMany(() => Department, { eager: true })
   @JoinTable()
   departments?: Department[];
 }
