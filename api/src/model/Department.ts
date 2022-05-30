@@ -5,8 +5,12 @@ export default class Department {
   @PrimaryColumn({
     length: 18,
   })
-  id?: string;
+  id: string;
 
   @Column()
   name?: string;
+
+  constructor(id: string) {
+    this.id = id;
+  }
 }

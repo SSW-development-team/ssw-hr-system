@@ -1,7 +1,8 @@
 import dayjs from 'dayjs';
 import express from 'express';
 import { AppDataSource } from '../app';
-import { UserDto } from '../dto/UserDTO';
+import { UserDto } from '../dto/UserDto';
+import ErrorResponse from '../ErrorResponse';
 import Department from '../model/Department';
 import User from '../model/User';
 
@@ -13,12 +14,10 @@ router.get('/', (req, res) => {
 });
 
 router.get('/test', async (req, res) => {
-  const user = new User();
-  user.id = '123456789012345678';
+  const user = new User('123456789012345678');
   user.name = 'Me and Bears2';
   user.joined_at = dayjs().format('YYYY-MM-DD');
-  const department = new Department();
-  department.id = '123456789012345678';
+  const department = new Department('123456789012345678');
   department.name = 'シナリオ部門';
   user.departments = [department];
   await AppDataSource.manager.save(department);
@@ -33,26 +32,52 @@ router.get('/users', async (req, res) => {
 });
 
 router.get('/users/:id', async (req, res) => {
-  res
-    .status(200)
-    .send(await AppDataSource.manager.findOneBy(User, { id: req.params.id }));
+  const user = await AppDataSource.manager.findOneBy(User, {
+    id: req.params.id,
+  });
+  if (user == null) {
+    res.status(404).send({ code: 404, message: 'User not found' });
+    return;
+  }
+  res.status(200).send(user);
 });
 
 router.post('/users', async (req, res) => {
-  const user = new User();
-  const { id, name, joined_at, left_at, comment, departments } =
-    req.body as UserDto;
-  user.id = id;
-  user.name = name;
-  user.joined_at = joined_at;
-  user.left_at = left_at;
-  user.comment = comment;
-  user.departments = departments.map((d) => {
-    const department = new Department();
-    department.id = d;
-    return department;
-  });
-  res.status(200).send(await AppDataSource.manager.save(User, user));
+  try {
+    res
+      .status(200)
+      .send(
+        await AppDataSource.manager.save(
+          User,
+          userMap(req.body, new User(req.body.id))
+        )
+      );
+  } catch (error) {
+    console.error(error);
+    res.status(400).send({ code: 404, message: 'Bad request' });
+  }
 });
+
+router.patch('/users/:id', async (req, res) => {
+  res
+    .status(200)
+    .send(
+      await AppDataSource.manager.save(
+        User,
+        userMap(req.body, new User(req.params.id))
+      )
+    );
+});
+
+function userMap(req: UserDto, user: User) {
+  //idはマッピング対象外
+  user.name = req.name;
+  user.joined_at = req.joined_at;
+  user.left_at = req.left_at;
+  user.comment = req.comment;
+  if (req.departments)
+    user.departments = req.departments.map((d) => new Department(d));
+  return user;
+}
 
 export default router;

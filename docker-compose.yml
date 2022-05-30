@@ -25,6 +25,8 @@ services:
     command: sh -c "yarn && yarn dev"
     depends_on:
       - db
+    environment:
+      CLIENT_ORIGIN_URL: "http://localhost:8000"
   db:
     image: mysql:8
     container_name: db-container

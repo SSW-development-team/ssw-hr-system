@@ -6,7 +6,7 @@ export default class User {
   @PrimaryColumn({
     length: 18,
   })
-  id?: string;
+  id: string;
 
   @Column()
   name?: string;
@@ -23,4 +23,8 @@ export default class User {
   @ManyToMany(() => Department, { eager: true })
   @JoinTable()
   departments?: Department[];
+
+  constructor(id: string) {
+    this.id = id;
+  }
 }
