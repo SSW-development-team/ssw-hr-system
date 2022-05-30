@@ -2,18 +2,15 @@ version: "3"
 services:
   front:
     image: node:16
-    # volumes:
-    #   - ./front:/usr/src
-    #   - front_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
-    # working_dir: "/usr/src"
-    # command: sh -c "yarn install && yarn start"
-    # ports:
-    #   - "80:3000"
-    # environment:
-    #   REACT_APP_AUTH0_AUDIENCE: $AUTH0_AUDIENCE
-    #   REACT_APP_AUTH0_CLIENT_ID: $AUTH0_FRONT_CLIENT_ID
-    #   REACT_APP_AUTH0_DOMAIN: $AUTH0_DOMAIN
-    #   REACT_APP_SERVER_URL: "http://localhost:3000"
+    volumes:
+      - ./front:/usr/src
+      - front_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
+    working_dir: "/usr/src"
+    command: sh -c "yarn && yarn start"
+    ports:
+      - "80:3000"
+    environment:
+      REACT_APP_SERVER_URL: "http://localhost:3000"
   api:
     image: node:16
     volumes:
