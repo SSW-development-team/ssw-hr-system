@@ -2,7 +2,6 @@ import dayjs from 'dayjs';
 import express from 'express';
 import { AppDataSource } from '../app';
 import { UserDto } from '../dto/UserDto';
-import ErrorResponse from '../ErrorResponse';
 import Department from '../model/Department';
 import User from '../model/User';
 

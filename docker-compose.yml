@@ -24,7 +24,7 @@ services:
     depends_on:
       - db
     environment:
-      CLIENT_ORIGIN_URL: "http://localhost:8000"
+      CLIENT_ORIGIN_URL: "http://localhost"
   db:
     image: mysql:8
     container_name: db-container
