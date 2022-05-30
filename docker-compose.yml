@@ -11,7 +11,6 @@ services:
       - "80:3000"
     environment:
       REACT_APP_SERVER_URL: "http://localhost:3000"
-      CHOKIDAR_USEPOLLING: true
   api:
     image: node:16
     volumes:
