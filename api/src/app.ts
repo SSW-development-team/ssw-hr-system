@@ -1,12 +1,9 @@
-// test
-// test
 import Express from 'express';
 import logger from 'morgan';
-// import cors from 'cors';
 import helmet from 'helmet';
 import compression from 'compression';
 import { DataSource } from 'typeorm';
-// import func from './routes/bot';
+import func from './routes/bot';
 import dotenv from 'dotenv';
 import createError from 'http-errors';
 import router from './routes/router';
