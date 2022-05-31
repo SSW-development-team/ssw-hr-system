@@ -88,13 +88,15 @@ function App() {
       setValue(initialValue);
     }, [initialValue]);
 
-    return (
+    return id == 'comment' ? (
       <Form.Control
         value={value}
         onChange={onChange}
         onBlur={onBlur}
         className="form-control-plaintext"
       />
+    ) : (
+      <>{value}</>
     );
   };
 
@@ -103,7 +105,7 @@ function App() {
     Cell: EditableCell,
   };
 
-  const updateMyData = (rowIndex: number, columnId: number, value: any) => {
+  const updateMyData = (rowIndex: number, columnId: string, value: any) => {
     // We also turn on the flag to not reset the page
     const newUsers = users.map((row, index) => {
       if (index === rowIndex) {
@@ -115,7 +117,11 @@ function App() {
       return row;
     });
     setUsers(newUsers);
-    console.log(users);
+    const user = newUsers[rowIndex];
+    axios.patch(
+      (process.env.REACT_APP_SERVER_URL ?? 'SERVER_URL') + '/users/' + user.id,
+      { [columnId]: value }
+    );
   };
 
   const tableProps: any = {
