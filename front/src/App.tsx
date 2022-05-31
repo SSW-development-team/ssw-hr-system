@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Container, Table } from 'react-bootstrap';
+import { Container, Form, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
 import { Cell, CellProps, Column, useTable } from 'react-table';
@@ -88,7 +88,14 @@ function App() {
       setValue(initialValue);
     }, [initialValue]);
 
-    return <input value={value} onChange={onChange} onBlur={onBlur} />;
+    return (
+      <Form.Control
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        className="form-control-plaintext"
+      />
+    );
   };
 
   // Set our editable cell renderer as the default Cell renderer
@@ -98,17 +105,16 @@ function App() {
 
   const updateMyData = (rowIndex: number, columnId: number, value: any) => {
     // We also turn on the flag to not reset the page
-    setUsers((old) =>
-      old.map((row, index) => {
-        if (index === rowIndex) {
-          return {
-            ...old[rowIndex],
-            [columnId]: value,
-          };
-        }
-        return row;
-      })
-    );
+    const newUsers = users.map((row, index) => {
+      if (index === rowIndex) {
+        return {
+          ...users[rowIndex],
+          [columnId]: value,
+        };
+      }
+      return row;
+    });
+    setUsers(newUsers);
     console.log(users);
   };
 
