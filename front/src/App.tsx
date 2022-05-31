@@ -4,7 +4,9 @@ import './App.css';
 import { Container, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
-import { useTable } from 'react-table';
+import { Cell, CellProps, Column, useTable } from 'react-table';
+import { UserDto2 } from './dto/UserDto2';
+
 function App() {
   const [users, setUsers] = useState(new Array<UserDto>());
 
@@ -17,20 +19,22 @@ function App() {
     })();
   }, []);
 
-  const data = React.useMemo(
+  const data: UserDto2[] = React.useMemo(
     () =>
       users.map((user) => ({
-        id: user.id,
-        name: user.name,
-        joined_at: user.joined_at,
-        left_at: user.left_at,
-        comment: user.comment,
-        departments: user.departments?.map((d) => d.name).join(','),
+        id: user.id ?? '',
+        name: user.name ?? '',
+        joined_at: user.joined_at ?? '',
+        left_at: user.left_at ?? '',
+        comment: user.comment ?? '',
+        departments: user.departments
+          ? user.departments?.map((d) => d.name).join(',')
+          : '',
       })),
     [users]
   );
 
-  const columns: any = React.useMemo(
+  const columns: Column<UserDto2>[] = React.useMemo(
     () => [
       {
         Header: 'ID',
@@ -60,34 +64,62 @@ function App() {
     []
   );
 
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data });
+  // Create an editable cell renderer
+  const EditableCell = ({
+    value: initialValue,
+    row: { index },
+    column: { id },
+    updateMyData, // This is a custom function that we supplied to our table instance
+  }: any) => {
+    // We need to keep and update the state of the cell normally
+    const [value, setValue] = React.useState(initialValue);
 
-  const defaultColumn: Partial<ColumnDef<MyTableGenerics>> = {
-    cell: ({ getValue, row: { index }, column: { id }, instance }) => {
-      const initialValue = getValue();
-      // We need to keep and update the state of the cell normally
-      const [value, setValue] = React.useState(initialValue);
+    const onChange = (e: any) => {
+      setValue(e.target.value);
+    };
 
-      // When the input is blurred, we'll call our table meta's updateData function
-      const onBlur = () => {
-        instance.options.meta?.updateData(index, id, value);
-      };
+    // We'll only update the external data when the input is blurred
+    const onBlur = () => {
+      updateMyData(index, id, value);
+    };
 
-      // If the initialValue is changed external, sync it up with our state
-      React.useEffect(() => {
-        setValue(initialValue);
-      }, [initialValue]);
+    // If the initialValue is changed external, sync it up with our state
+    React.useEffect(() => {
+      setValue(initialValue);
+    }, [initialValue]);
 
-      return (
-        <input
-          value={value as string}
-          onChange={(e) => setValue(e.target.value)}
-          onBlur={onBlur}
-        />
-      );
-    },
+    return <input value={value} onChange={onChange} onBlur={onBlur} />;
   };
+
+  // Set our editable cell renderer as the default Cell renderer
+  const defaultColumn = {
+    Cell: EditableCell,
+  };
+
+  const updateMyData = (rowIndex: number, columnId: number, value: any) => {
+    // We also turn on the flag to not reset the page
+    setUsers((old) =>
+      old.map((row, index) => {
+        if (index === rowIndex) {
+          return {
+            ...old[rowIndex],
+            [columnId]: value,
+          };
+        }
+        return row;
+      })
+    );
+    console.log(users);
+  };
+
+  const tableProps: any = {
+    columns,
+    data,
+    defaultColumn,
+    updateMyData,
+  };
+  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
+    useTable<UserDto2>(tableProps);
 
   return (
     <Container className="pt-5">
