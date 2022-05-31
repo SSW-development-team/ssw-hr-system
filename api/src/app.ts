@@ -62,7 +62,5 @@ AppDataSource.initialize()
   })
   .catch((error) => console.log(error));
 
-// func();
-
 module.exports = app;
 export default app;

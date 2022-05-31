@@ -1,11 +1,16 @@
+import { REST } from '@discordjs/rest';
 import dayjs from 'dayjs';
 import express from 'express';
 import { AppDataSource } from '../app';
 import { UserDto } from '../dto/UserDto';
 import Department from '../model/Department';
 import User from '../model/User';
+import { Routes } from 'discord-api-types/v9';
+import { Client, Intents } from 'discord.js';
 
 const router = express.Router();
+
+const DATE_FORMAT = 'YYYY-MM-DD';
 
 // Root Endpoint
 router.get('/', (req, res) => {
@@ -15,7 +20,7 @@ router.get('/', (req, res) => {
 router.get('/test', async (req, res) => {
   const user = new User('123456789012345678');
   user.name = 'Me and Bears2';
-  user.joined_at = dayjs().format('YYYY-MM-DD');
+  user.joined_at = dayjs().format(DATE_FORMAT);
   const department = new Department('123456789012345678');
   department.name = 'シナリオ部門';
   user.departments = [department];
@@ -78,5 +83,67 @@ function userMap(req: UserDto, user: User) {
     user.departments = req.departments.map((d) => new Department(d));
   return user;
 }
+
+router.get('/test2', async (req, res) => {
+  console.log(process.env.CLIENT_ID);
+  const { CLIENT_ID, GUILD_ID, CLIENT_SECRET } = process.env;
+  if (
+    CLIENT_ID === undefined ||
+    GUILD_ID === undefined ||
+    CLIENT_SECRET == undefined
+  )
+    throw new Error('CLIENT_ID is undefined!');
+
+  // const commands = [
+  //   {
+  //     name: 'ping',
+  //     description: 'Replies with Pong!',
+  //   },
+  // ];
+
+  // const rest = new REST({ version: '9' }).setToken(CLIENT_SECRET);
+
+  // (async () => {
+  //   try {
+  //     console.log('Started refreshing application (/) commands.');
+
+  //     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
+  //       body: commands,
+  //     });
+
+  //     console.log('Successfully reloaded application (/) commands.');
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // })();
+
+  const client = new Client({
+    intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
+  });
+  await client.login(CLIENT_SECRET);
+  await new Promise<void>((resolve, reject) => {
+    client.once('ready', () => resolve());
+  });
+  const guild = client.guilds.cache.get(GUILD_ID);
+  if (guild == null) {
+    res.status(500).send({ message: 'the guild was not found' });
+    return;
+  }
+  const departments = await AppDataSource.manager.find(Department);
+  const departmentIds = departments.map((d) => d.id);
+  const membersF = await guild.members.fetch();
+  console.log(membersF.size);
+  guild.members.cache.forEach((m) => {
+    const user = new User(m.id);
+    user.name = m.displayName;
+    if (m.joinedAt) user.joined_at = dayjs(m.joinedAt).format(DATE_FORMAT);
+    user.departments = departments.filter((d) => d.id in m.roles.cache);
+    // await AppDataSource.manager.save(
+    //   User,
+    //   userMap(req.body, new User(req.params.id))
+    // )
+  });
+  res.status(200).send({ message: 'end' });
+});
 
 export default router;
