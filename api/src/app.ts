@@ -42,10 +42,10 @@ app.use((err: any, req: Express.Request, res: Express.Response) => {
 
 export const AppDataSource = new DataSource({
   type: 'mysql',
-  host: 'db',
+  host: process.env.DB_HOST,
   port: 3306,
-  username: 'root',
-  password: 'docker',
+  username: process.env.DB_USENAME,
+  password: process.env.DB_PASSWORD,
   database: 'ssw_hr',
   entities: [User, Department],
   synchronize: true,

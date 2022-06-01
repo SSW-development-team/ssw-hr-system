@@ -25,6 +25,9 @@ services:
       - db
     environment:
       CLIENT_ORIGIN_URL: "http://localhost"
+      DB_HOST: "db"
+      DB_USERNAME: "root"
+      DB_PASSWORD: "docker"
   db:
     image: mysql:8
     container_name: db-container
