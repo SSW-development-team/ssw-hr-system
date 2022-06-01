@@ -3,7 +3,6 @@ import logger from 'morgan';
 import helmet from 'helmet';
 import compression from 'compression';
 import { DataSource } from 'typeorm';
-import func from './route/bot';
 import dotenv from 'dotenv';
 import createError from 'http-errors';
 import router from './route/router';
