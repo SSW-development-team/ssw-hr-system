@@ -122,7 +122,8 @@ router.get('/test2', async (req, res) => {
     const user = users.find((user) => user.id == m.id) ?? new User(m.id);
     user.name = m.displayName;
     if (m.joinedAt) user.joined_at = dayjs(m.joinedAt).format(DATE_FORMAT);
-    user.departments = departments.filter((d) => d.id in m.roles.cache);
+    const roleIds = m.roles.cache.mapValues((r) => r.id);
+    user.departments = departments.filter((d) => d.id in roleIds);
     return user;
   });
   await AppDataSource.manager.save(User, leftUsers);

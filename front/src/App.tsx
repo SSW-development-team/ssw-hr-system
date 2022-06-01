@@ -137,7 +137,7 @@ function App() {
     <Container className="pt-5">
       <h1>SSW 人事管理システム</h1>
       <h2>名簿</h2>
-      <Table striped bordered hover {...getTableProps()}>
+      <Table striped bordered hover {...getTableProps()} size={'sm'}>
         <thead>
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
@@ -153,7 +153,9 @@ function App() {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                  <td {...cell.getCellProps()} className="align-middle">
+                    {cell.render('Cell')}
+                  </td>
                 ))}
               </tr>
             );
