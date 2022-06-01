@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 import Department from './Department';
 
-@Entity()
+@Entity('users')
 export default class User {
   @PrimaryColumn({
     length: 18,

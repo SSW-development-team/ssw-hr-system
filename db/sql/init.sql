@@ -29,7 +29,7 @@ USE `ssw_hr`;
 -- テーブルの構造 `department`
 --
 
-CREATE TABLE IF NOT EXISTS `department` (
+CREATE TABLE IF NOT EXISTS `departments` (
   `id` varchar(18) COLLATE utf8mb4_general_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_general_ci NOT NULL,
   PRIMARY KEY (`id`)
@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS `department` (
 -- テーブルのデータのダンプ `department`
 --
 
-INSERT INTO `department` (`id`, `name`) VALUES
+INSERT INTO `departments` (`id`, `name`) VALUES
 ('726737845091303474', '翻訳部門'),
 ('751418209273511986', 'コーディング部門'),
 ('751426084259627068', 'グラフィクス部門'),
