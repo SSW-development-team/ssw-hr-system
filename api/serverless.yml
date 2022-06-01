@@ -27,3 +27,4 @@ custom:
     includeModules:
       forceInclude:
         - mysql2 # mysql2が何故か勝手に除外されるので強制する
+    webpackConfig: webpack.config.ts

@@ -1,6 +1,7 @@
-const nodeExternals = require('webpack-node-externals');
+import nodeExternals from 'webpack-node-externals';
+import TerserPlugin from 'terser-webpack-plugin';
 
-module.exports = {
+export default {
   // モード値を production に設定すると最適化された状態で、
   // development に設定するとソースマップ有効でJSファイルが出力される
   mode: 'production',
@@ -34,4 +35,9 @@ module.exports = {
   // You can manually set the externals too.
   // 外部依存にしておかないと Can't resolve 'canvas' が jsdomで発生する（わからない）
   externals: [nodeExternals()],
+
+  optimization: {
+    minimize: true,
+    minimizer: [new TerserPlugin({ terserOptions: { keep_classnames: true } })],
+  },
 };
