@@ -23,3 +23,7 @@ plugins:
 
 custom:
   webpackIncludeModules: true # enable auto-packing of external modules
+  webpack:
+    includeModules:
+      forceInclude:
+        - mysql2 # mysql2が何故か勝手に除外されるので強制する

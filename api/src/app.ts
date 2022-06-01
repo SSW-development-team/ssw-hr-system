@@ -10,6 +10,7 @@ import cors from 'cors';
 import 'reflect-metadata';
 import User from './model/User';
 import Department from './model/Department';
+
 // envファイルの読み込み
 dotenv.config();
 

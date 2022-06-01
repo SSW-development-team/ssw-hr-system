@@ -1,15 +1,15 @@
-const nodeExternals = require("webpack-node-externals");
+const nodeExternals = require('webpack-node-externals');
 
 module.exports = {
   // モード値を production に設定すると最適化された状態で、
   // development に設定するとソースマップ有効でJSファイルが出力される
-  mode: "production",
+  mode: 'production',
 
   // 魔法のコード これを書くと Can't resolve 'fs' が消える
-  target: "node",
+  target: 'node',
 
   // メインとなるJavaScriptファイル（エントリーポイント）
-  entry: "./handler.ts",
+  entry: './handler.ts',
 
   module: {
     rules: [
@@ -17,7 +17,7 @@ module.exports = {
         // 拡張子 .ts の場合
         test: /\.ts$/,
         // TypeScript をコンパイルする
-        use: "ts-loader",
+        use: 'ts-loader',
       },
     ],
   },
@@ -27,7 +27,7 @@ module.exports = {
   // 記載したほうがトラブルに巻き込まれにくい。
   resolve: {
     // 拡張子を配列で指定
-    extensions: [".ts", ".js"],
+    extensions: ['.ts', '.js'],
   },
 
   // we use webpack-node-externals to excludes all node deps.
