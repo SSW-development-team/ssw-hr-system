@@ -94,29 +94,6 @@ router.get('/test2', async (req, res) => {
   )
     throw new Error('CLIENT_ID is undefined!');
 
-  // const commands = [
-  //   {
-  //     name: 'ping',
-  //     description: 'Replies with Pong!',
-  //   },
-  // ];
-
-  // const rest = new REST({ version: '9' }).setToken(CLIENT_SECRET);
-
-  // (async () => {
-  //   try {
-  //     console.log('Started refreshing application (/) commands.');
-
-  //     await rest.put(Routes.applicationGuildCommands(CLIENT_ID, GUILD_ID), {
-  //       body: commands,
-  //     });
-
-  //     console.log('Successfully reloaded application (/) commands.');
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // })();
-
   const client = new Client({
     intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MEMBERS],
   });
@@ -130,20 +107,28 @@ router.get('/test2', async (req, res) => {
     return;
   }
   const departments = await AppDataSource.manager.find(Department);
-  const departmentIds = departments.map((d) => d.id);
-  const membersF = await guild.members.fetch();
-  console.log(membersF.size);
-  guild.members.cache.forEach((m) => {
-    const user = new User(m.id);
+  const latestUsers = await guild.members.fetch();
+  const users = await AppDataSource.manager.find(User);
+  const latestUserIds = latestUsers.map((u) => u.id);
+  // サーバーを最近脱退したメンバーに脱退日を設定
+  const leftUsers = users
+    .filter((user) => user.isAlive() && !(user.id in latestUserIds))
+    .map((user) => {
+      user.left_at = dayjs().format(DATE_FORMAT);
+      return user;
+    });
+  // 既存・新規メンバーの情報を更新
+  const updatedUsers = latestUsers.map((m) => {
+    const user = users.find((user) => user.id == m.id) ?? new User(m.id);
     user.name = m.displayName;
     if (m.joinedAt) user.joined_at = dayjs(m.joinedAt).format(DATE_FORMAT);
     user.departments = departments.filter((d) => d.id in m.roles.cache);
-    // await AppDataSource.manager.save(
-    //   User,
-    //   userMap(req.body, new User(req.params.id))
-    // )
+    return user;
   });
-  res.status(200).send({ message: 'end' });
+  await AppDataSource.manager.save(User, leftUsers);
+  await AppDataSource.manager.save(User, updatedUsers);
+  res.status(200).send({ users: users });
+  // TODO: set default encoding utf8mb4generalci
 });
 
 export default router;

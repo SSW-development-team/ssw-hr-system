@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { Column, Entity, JoinTable, ManyToMany, PrimaryColumn } from 'typeorm';
 import Department from './Department';
 
@@ -26,5 +27,12 @@ export default class User {
 
   constructor(id: string) {
     this.id = id;
+  }
+
+  public isAlive() {
+    return (
+      this.left_at == undefined ||
+      dayjs(this.joined_at).isAfter(dayjs(this.left_at))
+    );
   }
 }
