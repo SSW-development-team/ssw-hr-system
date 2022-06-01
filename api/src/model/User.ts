@@ -10,7 +10,9 @@ export default class User {
   id: string;
 
   @Column()
-  name?: string;
+  displayName?: string;
+  @Column()
+  username?: string;
 
   @Column('date')
   joined_at?: string;

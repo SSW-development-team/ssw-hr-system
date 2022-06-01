@@ -4,8 +4,8 @@ import './App.css';
 import { Container, Form, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
-import { Cell, CellProps, Column, useTable } from 'react-table';
-import { UserDto2 } from './dto/UserDto2';
+import { Column, useTable } from 'react-table';
+import { SerializedUserDto } from './dto/SerializedUserDto';
 
 function App() {
   const [users, setUsers] = useState(new Array<UserDto>());
@@ -19,11 +19,12 @@ function App() {
     })();
   }, []);
 
-  const data: UserDto2[] = React.useMemo(
+  const data: SerializedUserDto[] = React.useMemo(
     () =>
       users.map((user) => ({
         id: user.id ?? '',
-        name: user.name ?? '',
+        username: user.username ?? '',
+        displayName: user.displayName ?? '',
         joined_at: user.joined_at ?? '',
         left_at: user.left_at ?? '',
         comment: user.comment ?? '',
@@ -34,15 +35,19 @@ function App() {
     [users]
   );
 
-  const columns: Column<UserDto2>[] = React.useMemo(
+  const columns: Column<SerializedUserDto>[] = React.useMemo(
     () => [
       {
         Header: 'ID',
         accessor: 'id',
       },
       {
-        Header: '名前',
-        accessor: 'name',
+        Header: 'ユーザ名',
+        accessor: 'username',
+      },
+      {
+        Header: '表示名',
+        accessor: 'displayName',
       },
       {
         Header: '参加日',
@@ -131,7 +136,7 @@ function App() {
     updateMyData,
   };
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<UserDto2>(tableProps);
+    useTable<SerializedUserDto>(tableProps);
 
   return (
     <Container className="pt-5">
