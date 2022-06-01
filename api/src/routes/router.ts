@@ -127,7 +127,7 @@ router.get('/test2', async (req, res) => {
   });
   await AppDataSource.manager.save(User, leftUsers);
   await AppDataSource.manager.save(User, updatedUsers);
-  res.status(200).send({ users: users });
+  res.status(200).send({ users: updatedUsers });
   // TODO: set default encoding utf8mb4generalci
 });
 
