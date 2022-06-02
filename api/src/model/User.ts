@@ -18,7 +18,7 @@ export default class User {
   joined_at?: string;
 
   @Column('date', { nullable: true })
-  left_at?: string;
+  left_at?: string | null;
 
   @Column({ default: '' })
   comment?: string;
@@ -34,6 +34,7 @@ export default class User {
   public isAlive() {
     return (
       this.left_at == undefined ||
+      this.left_at == null ||
       dayjs(this.joined_at).isAfter(dayjs(this.left_at))
     );
   }
