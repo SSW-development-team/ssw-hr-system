@@ -32,7 +32,7 @@ export default class DiscordService {
     const latestUserIds = latestUsers.map((u) => u.id);
     // サーバーを最近脱退したメンバーに脱退日を設定
     const leftUsers = users
-      .filter((user) => user.isAlive() && !(user.id in latestUserIds))
+      .filter((user) => user.isAlive() && !latestUserIds.includes(user.id))
       .map((user) => {
         user.left_at = dayjs().format(DATE_FORMAT);
         return user;
