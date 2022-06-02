@@ -10,6 +10,7 @@ import cors from 'cors';
 import 'reflect-metadata';
 import User from './model/User';
 import Department from './model/Department';
+import departmentsRouter from './route/departments';
 
 // envファイルの読み込み
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(compression()); // gzip圧縮して返す
 
 // apiルータへ
 app.use('/', router);
+app.use('/', departmentsRouter);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));
