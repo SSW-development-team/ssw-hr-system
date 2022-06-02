@@ -1,10 +1,10 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import './App.css';
-import { Container, Form, Table } from 'react-bootstrap';
+import { Form, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
-import { Column, useTable } from 'react-table';
+import { Column, useSortBy, useTable } from 'react-table';
 import { SerializedUserDto } from './dto/SerializedUserDto';
 
 function UserTable(props: {
@@ -72,7 +72,7 @@ function UserTable(props: {
     // We need to keep and update the state of the cell normally
     const [value, setValue] = React.useState(initialValue);
 
-    const onChange = (e: any) => {
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setValue(e.target.value);
     };
 
@@ -129,7 +129,7 @@ function UserTable(props: {
     updateMyData,
   };
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable<SerializedUserDto>(tableProps);
+    useTable<SerializedUserDto>(tableProps, useSortBy);
 
   return (
     <Table striped bordered hover {...getTableProps()} size={'sm'}>
@@ -137,7 +137,12 @@ function UserTable(props: {
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
+                {column.render('Header')}
+                <span>
+                  {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
+                </span>
+              </th>
             ))}
           </tr>
         ))}

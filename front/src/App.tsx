@@ -1,11 +1,9 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Container, Form, Table } from 'react-bootstrap';
+import { Container } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
-import { Column, useTable } from 'react-table';
-import { SerializedUserDto } from './dto/SerializedUserDto';
 import UserTable from './UserTable';
 
 function App() {
@@ -21,7 +19,7 @@ function App() {
   }, []);
 
   return (
-    <Container className="pt-5">
+    <Container className="pt-5" fluid>
       <h1>SSW 人事管理システム</h1>
       <h2>名簿</h2>
       <UserTable users={users} setUsers={setUsers}></UserTable>
