@@ -48,6 +48,7 @@ INSERT INTO `departments` (`id`, `name`) VALUES
 ('840648409395363861', '広報部門'),
 ('862627751789330442', '技術部門');
 INSERT INTO `departments` (`id`, `name`) VALUES ('798232910384595005', 'BOT');
+INSERT INTO `departments` (`id`, `name`) VALUES ('871722640765751326', '亡命政府');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

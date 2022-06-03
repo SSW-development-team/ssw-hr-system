@@ -208,21 +208,19 @@ function UserTable(props: {
     );
   }
 
+  const IGNORE_DEPARTMENTS = ['BOT', '亡命政府'];
+
   const textWithoutBotFillter = (rows: any, id: any, filterValue: string) => {
     return rows.filter((row: any) => {
       let rowValue: string = row.values[id];
-      // return rowValue !== undefined
-      //   ? String(rowValue)
-      //       .toLowerCase()
-      //       .startsWith(String(filterValue).toLowerCase())
-      //   : true;
-      console.log('filter:', filterValue);
       if (rowValue === undefined) return true;
       rowValue = String(rowValue).toLowerCase();
-      if (filterValue == '*') return !rowValue.includes('bot');
-      else if (filterValue == 'BOT') return rowValue.includes('bot');
+      const ignore_departments = IGNORE_DEPARTMENTS.map((d) => d.toLowerCase());
+      if (filterValue == '*') return !ignore_departments.includes(rowValue);
+      if (IGNORE_DEPARTMENTS.includes(filterValue))
+        return rowValue.includes(String(filterValue).toLowerCase());
       return (
-        !rowValue.includes('bot') &&
+        !ignore_departments.includes(rowValue) &&
         rowValue.includes(String(filterValue).toLowerCase())
       );
     });
