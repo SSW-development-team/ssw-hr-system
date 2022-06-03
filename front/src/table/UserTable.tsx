@@ -1,61 +1,33 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useEffect } from 'react';
-import './App.css';
+import React, { useMemo, useEffect, useState } from 'react';
 import { Form, Table } from 'react-bootstrap';
-import { UserDto } from './dto/UserDto';
+import { UserDto } from '../dto/UserDto';
 import axios from 'axios';
 import {
   Column,
-  useAsyncDebounce,
   useFilters,
   useFlexLayout,
   useGlobalFilter,
   useSortBy,
   useTable,
 } from 'react-table';
-import { SerializedUserDto } from './dto/SerializedUserDto';
-import { DepartmentDto } from './dto/DepartmentDto';
+import { SerializedUserDto } from '../dto/SerializedUserDto';
+import { DepartmentDto } from '../dto/DepartmentDto';
+import SelectColumnFilter from './filter/SelectColumnFilter';
+import GlobalFilter from './filter/GlobalFilter';
+import DefaultColumnFilter from './filter/DefaultColumnFilter';
+import { textWithoutBotFillter } from './filter/textWithoutBotFillter';
+import { textFilter } from './filter/textFilter';
+import { booleanFilter } from './filter/booleanFilter';
+import BooleanSelect from './filter/BooleanSelect';
 
-// This is a custom filter UI for selecting
-// a unique option from a list
-function SelectColumnFilter({
-  column: { filterValue, setFilter, preFilteredRows, id },
-}: any) {
-  // Calculate the options for filtering
-  // using the preFilteredRows
-  const options = useMemo(() => {
-    const options = new Set<string>();
-    preFilteredRows.forEach((row: any) => {
-      row.values[id].split(',').forEach((o: string) => options.add(o));
-    });
-    options.delete('');
-    return Array.from(options.values());
-  }, [id, preFilteredRows]);
-
-  // Render a multi-select box
-  return (
-    <Form.Select
-      value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
-      }}
-    >
-      <option value="">全て</option>
-      {options.map((option, i) => (
-        <option key={i} value={option}>
-          {option}
-        </option>
-      ))}
-    </Form.Select>
-  );
-}
-
-function UserTable(props: {
+export default function UserTable(props: {
   users: UserDto[];
   setUsers: (users: UserDto[]) => void;
   departments: DepartmentDto[];
 }) {
   const { users, setUsers, departments } = props;
+  const [isSetInitialFilter, setIssetInitialFilter] = useState(false);
   const data: SerializedUserDto[] = useMemo(
     () =>
       users.map((user) => ({
@@ -103,7 +75,6 @@ function UserTable(props: {
         accessor: 'departments',
         Filter: SelectColumnFilter,
         filter: 'textWithoutBot',
-        // defaultCanFilter: true,
       },
       {
         Header: 'コメント',
@@ -112,8 +83,9 @@ function UserTable(props: {
       {
         Header: 'CK1',
         accessor: 'check1',
-        Filter: SelectColumnFilter,
-        filter: 'textWithoutBot',
+        Filter: BooleanSelect,
+        filter: 'booleanFilter',
+        maxWidth: 30,
       },
     ],
     []
@@ -155,7 +127,7 @@ function UserTable(props: {
         value={value}
         onChange={onChange}
         onBlur={onBlur}
-        className="form-control-plaintext"
+        className="form-control-plaintext text-center"
       />
     ) : (
       <>{value}</>
@@ -187,72 +159,11 @@ function UserTable(props: {
     );
   };
 
-  function GlobalFilter({
-    preGlobalFilteredRows,
-    globalFilter,
-    setGlobalFilter,
-  }: any) {
-    const count = preGlobalFilteredRows.length;
-    const [value, setValue] = React.useState(globalFilter);
-    const onChange = useAsyncDebounce((value) => {
-      setGlobalFilter(value || undefined);
-    }, 200);
-
-    return (
-      <Form.Control
-        value={value || ''}
-        onChange={(e) => {
-          setValue(e.target.value);
-          onChange(e.target.value);
-        }}
-        placeholder={`${count} records...`}
-        style={{ width: '100%' }}
-      />
-    );
-  }
-
-  function DefaultColumnFilter({ column: { filterValue, setFilter } }: any) {
-    return (
-      <Form.Control
-        value={filterValue || ''}
-        onChange={(e) => {
-          setFilter(e.target.value || undefined); // Set undefined to remove the filter entirely
-        }}
-      />
-    );
-  }
-
-  const IGNORE_DEPARTMENTS = ['BOT', '亡命政府'];
-
-  const textWithoutBotFillter = (rows: any, id: any, filterValue: string) => {
-    return rows.filter((row: any) => {
-      let rowValue: string = row.values[id];
-      if (rowValue === undefined) return true;
-      rowValue = String(rowValue).toLowerCase();
-      const ignore_departments = IGNORE_DEPARTMENTS.map((d) => d.toLowerCase());
-      if (filterValue == '*') return !ignore_departments.includes(rowValue);
-      if (IGNORE_DEPARTMENTS.includes(filterValue))
-        return rowValue.includes(String(filterValue).toLowerCase());
-      return (
-        !ignore_departments.includes(rowValue) &&
-        rowValue.includes(String(filterValue).toLowerCase())
-      );
-    });
-  };
-
   const filterTypes = React.useMemo(
     () => ({
-      text: (rows: any, id: any, filterValue: any) => {
-        return rows.filter((row: any) => {
-          const rowValue = row.values[id];
-          return rowValue !== undefined
-            ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
-            : true;
-        });
-      },
+      text: textFilter,
       textWithoutBot: textWithoutBotFillter,
+      boolean: booleanFilter,
     }),
     []
   );
@@ -284,7 +195,10 @@ function UserTable(props: {
   );
 
   useEffect(() => {
-    setFilter('departments', '*');
+    if (!isSetInitialFilter) {
+      setFilter('departments', '*');
+      setIssetInitialFilter(true);
+    }
   }, [departments, users]);
 
   return (
@@ -340,5 +254,3 @@ function UserTable(props: {
     </div>
   );
 }
-
-export default UserTable;

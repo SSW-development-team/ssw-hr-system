@@ -4,8 +4,8 @@ import './App.css';
 import { Container } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
-import UserTable from './UserTable';
 import { DepartmentDto } from './dto/DepartmentDto';
+import UserTable from './table/UserTable';
 
 function App() {
   const [users, setUsers] = useState(new Array<UserDto>());
