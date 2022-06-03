@@ -65,7 +65,6 @@ commands:
           working_directory: api
           command: |
             set -x
-            sudo apt-get install npm
             sudo npm i -g serverless
             sls config credentials -k ${AWS_ACCESS_KEY_ID} -s ${AWS_SECRET_ACCESS_KEY} -p aws
             sls deploy
