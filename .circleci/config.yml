@@ -32,6 +32,7 @@ jobs:
       # If you are using yarn instead npm, remove the line above and uncomment the two lines below.
       - node/install-packages:
           pkg-manager: yarn
+          app-dir: api
       - persist_to_workspace:
           root: .
           paths:
