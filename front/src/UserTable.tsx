@@ -8,6 +8,7 @@ import {
   Column,
   useAsyncDebounce,
   useFilters,
+  useFlexLayout,
   useGlobalFilter,
   useSortBy,
   useTable,
@@ -78,6 +79,7 @@ function UserTable(props: {
       {
         Header: 'ID',
         accessor: 'id',
+        maxWidth: 105,
       },
       {
         Header: 'ユーザ名',
@@ -90,10 +92,12 @@ function UserTable(props: {
       {
         Header: '参加日',
         accessor: 'joined_at',
+        maxWidth: 60,
       },
       {
         Header: '脱退日',
         accessor: 'left_at',
+        maxWidth: 60,
       },
       {
         Header: '部門',
@@ -265,7 +269,8 @@ function UserTable(props: {
     tableProps,
     useFilters, // useFilters!
     useGlobalFilter,
-    useSortBy
+    useSortBy,
+    useFlexLayout
   );
 
   useEffect(() => {
@@ -273,52 +278,56 @@ function UserTable(props: {
   }, [departments, users]);
 
   return (
-    <Table striped bordered hover {...getTableProps()} size={'sm'}>
-      <thead>
-        {headerGroups.map((headerGroup) => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <th key={column.id}>
-                <div {...column.getHeaderProps(column.getSortByToggleProps())}>
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted
-                      ? column.isSortedDesc
-                        ? ' 🔽'
-                        : ' 🔼'
-                      : ''}
-                  </span>
-                </div>
-                <div>{column.canFilter ? column.render('Filter') : null}</div>
-              </th>
-            ))}
-          </tr>
-        ))}
-        <tr>
-          <th colSpan={columns.length}>
-            <GlobalFilter
-              preGlobalFilteredRows={preGlobalFilteredRows}
-              globalFilter={state.globalFilter}
-              setGlobalFilter={setGlobalFilter}
-            />
-          </th>
-        </tr>
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map((cell) => (
-                <td {...cell.getCellProps()} className="align-middle">
-                  {cell.render('Cell')}
-                </td>
+    <div className="table-responsive-sm">
+      <Table striped bordered hover {...getTableProps()} size={'sm'}>
+        <thead>
+          {headerGroups.map((headerGroup) => (
+            <tr {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <th {...column.getHeaderProps()}>
+                  <div
+                    {...column.getHeaderProps(column.getSortByToggleProps())}
+                  >
+                    {column.render('Header')}
+                    <span>
+                      {column.isSorted
+                        ? column.isSortedDesc
+                          ? ' 🔽'
+                          : ' 🔼'
+                        : ''}
+                    </span>
+                  </div>
+                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                </th>
               ))}
             </tr>
-          );
-        })}
-      </tbody>
-    </Table>
+          ))}
+          <tr>
+            <th colSpan={columns.length}>
+              <GlobalFilter
+                preGlobalFilteredRows={preGlobalFilteredRows}
+                globalFilter={state.globalFilter}
+                setGlobalFilter={setGlobalFilter}
+              />
+            </th>
+          </tr>
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row);
+            return (
+              <tr {...row.getRowProps()}>
+                {row.cells.map((cell) => (
+                  <td {...cell.getCellProps()} className="align-middle p-0">
+                    {cell.render('Cell')}
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
+        </tbody>
+      </Table>
+    </div>
   );
 }
 
