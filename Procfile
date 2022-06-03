@@ -1,1 +1,1 @@
-web: node start
+web: cd bot && node start
