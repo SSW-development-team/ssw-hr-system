@@ -1,6 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
-
-@Entity('departments')
+@Entity()
 export default class Department {
   @PrimaryColumn({
     length: 18,
