@@ -1,11 +1,12 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo } from 'react';
+import React, { useMemo, useCallback, useEffect } from 'react';
 import './App.css';
 import { Form, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
 import {
   Column,
+  Row,
   useAsyncDebounce,
   useFilters,
   useGlobalFilter,
@@ -14,6 +15,41 @@ import {
 } from 'react-table';
 import { SerializedUserDto } from './dto/SerializedUserDto';
 import { DepartmentDto } from './dto/DepartmentDto';
+
+// This is a custom filter UI for selecting
+// a unique option from a list
+function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}: any) {
+  // Calculate the options for filtering
+  // using the preFilteredRows
+  const options = React.useMemo(() => {
+    const options = new Set<string>();
+    preFilteredRows.forEach((row: any) => {
+      row.values[id].split(',').forEach((o: string) => options.add(o));
+    });
+    return Array.from(options.values());
+  }, [id, preFilteredRows]);
+
+  useEffect(() => setFilter('BOT'), []);
+
+  // Render a multi-select box
+  return (
+    <Form.Select
+      value={filterValue}
+      onChange={(e) => {
+        setFilter(e.target.value || undefined);
+      }}
+    >
+      {/* <option value="*">All</option> */}
+      {options.map((option, i) => (
+        <option key={i} value={option}>
+          {option}
+        </option>
+      ))}
+    </Form.Select>
+  );
+}
 
 function UserTable(props: {
   users: UserDto[];
@@ -63,6 +99,8 @@ function UserTable(props: {
         Header: '部門',
         accessor: 'departments',
         Filter: SelectColumnFilter,
+        filter: 'textWithoutBot',
+        defaultCanFilter: true,
       },
       {
         Header: 'コメント',
@@ -170,40 +208,6 @@ function UserTable(props: {
     );
   }
 
-  // This is a custom filter UI for selecting
-  // a unique option from a list
-  function SelectColumnFilter({
-    column: { filterValue, setFilter, preFilteredRows, id },
-  }: any) {
-    // Calculate the options for filtering
-    // using the preFilteredRows
-    const options = React.useMemo(() => {
-      console.log('calc opt', departments);
-      const options = new Set<string>();
-      departments.forEach((department) => {
-        options.add(department.name);
-      });
-      return Array.from(options.values());
-    }, [id, preFilteredRows, departments]);
-
-    // Render a multi-select box
-    return (
-      <Form.Select
-        value={filterValue}
-        onChange={(e) => {
-          setFilter(e.target.value || undefined);
-        }}
-      >
-        <option value="">All</option>
-        {departments.map((d) => (
-          <option key={d.id} value={d.name}>
-            {d.name}
-          </option>
-        ))}
-      </Form.Select>
-    );
-  }
-
   const filterTypes = React.useMemo(
     () => ({
       text: (rows: any, id: any, filterValue: any) => {
@@ -214,6 +218,21 @@ function UserTable(props: {
                 .toLowerCase()
                 .startsWith(String(filterValue).toLowerCase())
             : true;
+        });
+      },
+      textWithoutBot: (rows: any, id: any, filterValue: any) => {
+        return rows.filter((row: any) => {
+          const rowValue = row.values[id];
+          console.log(filterValue);
+          return rowValue !== undefined
+            ? String(rowValue)
+                .toLowerCase()
+                .startsWith(String(filterValue).toLowerCase())
+            : true;
+          // if (rowValue === undefined) return true;
+          // rowValue = String(rowValue).toLowerCase();
+          // if (filterValue == '') return !rowValue.contains('BOT');
+          // return rowValue.contains(String(filterValue).toLowerCase());
         });
       },
     }),
@@ -237,6 +256,7 @@ function UserTable(props: {
     state,
     preGlobalFilteredRows,
     setGlobalFilter,
+    setFilter,
   } = useTable<SerializedUserDto>(
     tableProps,
     useFilters, // useFilters!
@@ -244,17 +264,25 @@ function UserTable(props: {
     useSortBy
   );
 
+  useEffect(() => setFilter('departments', 'instance'), [departments]);
+
   return (
     <Table striped bordered hover {...getTableProps()} size={'sm'}>
       <thead>
         {headerGroups.map((headerGroup) => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map((column) => (
-              <th {...column.getHeaderProps(column.getSortByToggleProps())}>
-                {column.render('Header')}
-                <span>
-                  {column.isSorted ? (column.isSortedDesc ? ' 🔽' : ' 🔼') : ''}
-                </span>
+              <th key={column.id}>
+                <div {...column.getHeaderProps(column.getSortByToggleProps())}>
+                  {column.render('Header')}
+                  <span>
+                    {column.isSorted
+                      ? column.isSortedDesc
+                        ? ' 🔽'
+                        : ' 🔼'
+                      : ''}
+                  </span>
+                </div>
                 <div>{column.canFilter ? column.render('Filter') : null}</div>
               </th>
             ))}
