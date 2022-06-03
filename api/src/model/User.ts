@@ -27,6 +27,9 @@ export default class User {
   @JoinTable()
   departments?: Department[];
 
+  @Column({ default: false })
+  check1?: boolean;
+
   constructor(id: string) {
     this.id = id;
   }

@@ -6,4 +6,5 @@ export type UserDto = {
   left_at?: string;
   comment?: string;
   departments?: string[];
+  check1?: boolean;
 };

@@ -5,4 +5,5 @@ export interface UserDtoBase {
   joined_at?: string;
   left_at?: string;
   comment?: string;
+  check1?: boolean;
 }

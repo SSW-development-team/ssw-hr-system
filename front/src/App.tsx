@@ -21,7 +21,6 @@ function App() {
       .get((process.env.REACT_APP_SERVER_URL ?? 'SERVER_URL') + '/departments')
       .then((res) => {
         setDepartments(res.data);
-        console.log(departments);
       });
   }, []);
 

@@ -32,8 +32,6 @@ function SelectColumnFilter({
     return Array.from(options.values());
   }, [id, preFilteredRows]);
 
-  useEffect(() => setFilter('BOT'), []);
-
   // Render a multi-select box
   return (
     <Form.Select
@@ -70,6 +68,7 @@ function UserTable(props: {
         departments: user.departments
           ? user.departments?.map((d) => d.name).join(',')
           : '',
+        check1: user.check1,
       })),
     [users]
   );
@@ -110,6 +109,12 @@ function UserTable(props: {
         Header: 'コメント',
         accessor: 'comment',
       },
+      {
+        Header: 'CK1',
+        accessor: 'check1',
+        Filter: SelectColumnFilter,
+        filter: 'textWithoutBot',
+      },
     ],
     []
   );
@@ -140,6 +145,13 @@ function UserTable(props: {
 
     return id == 'comment' ? (
       <Form.Control
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        className="form-control-plaintext"
+      />
+    ) : id == 'check1' ? (
+      <Form.Check
         value={value}
         onChange={onChange}
         onBlur={onBlur}
@@ -199,9 +211,7 @@ function UserTable(props: {
     );
   }
 
-  function DefaultColumnFilter({
-    column: { filterValue, preFilteredRows, setFilter },
-  }: any) {
+  function DefaultColumnFilter({ column: { filterValue, setFilter } }: any) {
     return (
       <Form.Control
         value={filterValue || ''}

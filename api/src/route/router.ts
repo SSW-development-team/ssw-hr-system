@@ -66,6 +66,7 @@ function userMap(req: UserDto, user: User) {
   user.joined_at = req.joined_at;
   user.left_at = req.left_at;
   user.comment = req.comment;
+  user.check1 = user.check1;
   if (req.departments)
     user.departments = req.departments.map((d) => new Department(d));
   return user;
