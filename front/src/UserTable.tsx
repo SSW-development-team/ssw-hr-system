@@ -27,6 +27,7 @@ function SelectColumnFilter({
     preFilteredRows.forEach((row: any) => {
       row.values[id].split(',').forEach((o: string) => options.add(o));
     });
+    options.delete('');
     return Array.from(options.values());
   }, [id, preFilteredRows]);
 
@@ -40,7 +41,7 @@ function SelectColumnFilter({
         setFilter(e.target.value || undefined);
       }}
     >
-      {/* <option value="*">All</option> */}
+      <option value="">全て</option>
       {options.map((option, i) => (
         <option key={i} value={option}>
           {option}
@@ -207,15 +208,23 @@ function UserTable(props: {
     );
   }
 
-  const textWithoutBotFillter = (rows: any, id: any, filterValue: any) => {
+  const textWithoutBotFillter = (rows: any, id: any, filterValue: string) => {
     return rows.filter((row: any) => {
-      const rowValue = row.values[id];
-      console.log(filterValue);
-      return rowValue !== undefined
-        ? String(rowValue)
-            .toLowerCase()
-            .startsWith(String(filterValue).toLowerCase())
-        : true;
+      let rowValue: string = row.values[id];
+      // return rowValue !== undefined
+      //   ? String(rowValue)
+      //       .toLowerCase()
+      //       .startsWith(String(filterValue).toLowerCase())
+      //   : true;
+      console.log('filter:', filterValue);
+      if (rowValue === undefined) return true;
+      rowValue = String(rowValue).toLowerCase();
+      if (filterValue == '*') return !rowValue.includes('bot');
+      else if (filterValue == 'BOT') return rowValue.includes('bot');
+      return (
+        !rowValue.includes('bot') &&
+        rowValue.includes(String(filterValue).toLowerCase())
+      );
     });
   };
 
@@ -231,21 +240,7 @@ function UserTable(props: {
             : true;
         });
       },
-      textWithoutBot: (rows: any, id: any, filterValue: any) => {
-        return rows.filter((row: any) => {
-          const rowValue = row.values[id];
-          console.log(filterValue);
-          return rowValue !== undefined
-            ? String(rowValue)
-                .toLowerCase()
-                .startsWith(String(filterValue).toLowerCase())
-            : true;
-          // if (rowValue === undefined) return true;
-          // rowValue = String(rowValue).toLowerCase();
-          // if (filterValue == '') return !rowValue.contains('BOT');
-          // return rowValue.contains(String(filterValue).toLowerCase());
-        });
-      },
+      textWithoutBot: textWithoutBotFillter,
     }),
     []
   );
@@ -276,7 +271,7 @@ function UserTable(props: {
   );
 
   useEffect(() => {
-    setFilter('departments', 'BOT');
+    setFilter('departments', '*');
   }, [departments, users]);
 
   return (
