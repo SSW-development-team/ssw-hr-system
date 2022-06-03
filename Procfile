@@ -1,1 +1,1 @@
-web: cd bot && node start
+web: sh -c 'cd ./api && yarn start'
