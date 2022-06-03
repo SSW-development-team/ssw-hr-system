@@ -3,7 +3,6 @@ import { AppDataSource } from '../app';
 import { UserDto } from '../dto/UserDto';
 import Department from '../model/Department';
 import User from '../model/User';
-import DiscordService from '../service/DiscordService';
 
 const router = express.Router();
 
@@ -13,11 +12,6 @@ router.get('/', (req, res) => {
 });
 
 router.get('/users', async (req, res) => {
-  const result = await new DiscordService().updateUsers();
-  if (result instanceof Error) {
-    res.status(500).send({ message: result.message });
-    return;
-  }
   res.status(200).send(await AppDataSource.manager.find(User));
 });
 

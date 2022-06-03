@@ -28,6 +28,17 @@ services:
       DB_HOST: "db"
       DB_USERNAME: "root"
       DB_PASSWORD: "docker"
+  bot:
+    image: node:16
+    volumes:
+      - ./bot/:/usr/src/
+      - bot_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
+    working_dir: "/usr/src"
+    command: sh -c "yarn && yarn dev"
+    depends_on:
+      - api
+    environment:
+      API_URL: "http://api:3000"
   db:
     image: mysql:8
     container_name: db-container
@@ -61,3 +72,4 @@ services:
 volumes:
   front_modules:
   api_modules:
+  bot_modules:
