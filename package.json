@@ -1,0 +1,8 @@
+{
+  "name": "ssw-hr-system",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/SSW-development-team/ssw-hr-system",
+  "author": "volgakurvar <kurvan1112@gmail.com>",
+  "license": "MIT"
+}
