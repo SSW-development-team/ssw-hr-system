@@ -1,12 +1,11 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useCallback, useEffect } from 'react';
+import React, { useMemo, useEffect } from 'react';
 import './App.css';
 import { Form, Table } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
 import axios from 'axios';
 import {
   Column,
-  Row,
   useAsyncDebounce,
   useFilters,
   useGlobalFilter,
@@ -23,7 +22,7 @@ function SelectColumnFilter({
 }: any) {
   // Calculate the options for filtering
   // using the preFilteredRows
-  const options = React.useMemo(() => {
+  const options = useMemo(() => {
     const options = new Set<string>();
     preFilteredRows.forEach((row: any) => {
       row.values[id].split(',').forEach((o: string) => options.add(o));
@@ -100,7 +99,7 @@ function UserTable(props: {
         accessor: 'departments',
         Filter: SelectColumnFilter,
         filter: 'textWithoutBot',
-        defaultCanFilter: true,
+        // defaultCanFilter: true,
       },
       {
         Header: 'コメント',
@@ -208,6 +207,18 @@ function UserTable(props: {
     );
   }
 
+  const textWithoutBotFillter = (rows: any, id: any, filterValue: any) => {
+    return rows.filter((row: any) => {
+      const rowValue = row.values[id];
+      console.log(filterValue);
+      return rowValue !== undefined
+        ? String(rowValue)
+            .toLowerCase()
+            .startsWith(String(filterValue).toLowerCase())
+        : true;
+    });
+  };
+
   const filterTypes = React.useMemo(
     () => ({
       text: (rows: any, id: any, filterValue: any) => {
@@ -264,7 +275,9 @@ function UserTable(props: {
     useSortBy
   );
 
-  useEffect(() => setFilter('departments', 'instance'), [departments]);
+  useEffect(() => {
+    setFilter('departments', 'BOT');
+  }, [departments, users]);
 
   return (
     <Table striped bordered hover {...getTableProps()} size={'sm'}>
