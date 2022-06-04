@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
-import { CellProps, Renderer } from 'react-table';
-import { SerializedUserDto } from '../dto/SerializedUserDto';
 
 // Create an editable cell renderer
 export const EditableCell = ({
