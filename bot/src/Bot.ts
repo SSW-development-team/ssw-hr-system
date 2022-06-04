@@ -84,7 +84,7 @@ export default class Bot {
       };
       return user;
     } catch (error) {
-      const msg = 'Failed to get departments data';
+      const msg = `Failed to get departments data, url=${apiClient.getUri()}`;
       this.log(msg);
       return new Error(msg);
     }

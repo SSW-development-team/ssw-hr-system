@@ -4,18 +4,20 @@ export const textWithoutBotFillter = (
   filterValue: string
 ) => {
   return rows.filter((row: any) => {
-    let rowValue: string = row.values[id];
+    const rowValue: string = row.values[id];
     if (rowValue === undefined) return true;
-    rowValue = String(rowValue).toLowerCase();
-    const ignore_departments = IGNORE_DEPARTMENTS.map((d) => d.toLowerCase());
-    if (filterValue == '*') return !ignore_departments.includes(rowValue);
+    if (filterValue == '*') return !inIngnoreDepartment(rowValue);
     if (IGNORE_DEPARTMENTS.includes(filterValue))
-      return rowValue.includes(String(filterValue).toLowerCase());
-    return (
-      !ignore_departments.includes(rowValue) &&
-      rowValue.includes(String(filterValue).toLowerCase())
-    );
+      return rowValue.includes(filterValue);
+    return !inIngnoreDepartment(rowValue) && rowValue.includes(filterValue);
   });
 };
 
 const IGNORE_DEPARTMENTS = ['BOT', '亡命政府'];
+
+const inIngnoreDepartment = (department: string) => {
+  const ans = IGNORE_DEPARTMENTS.some((d) => {
+    return department.includes(d);
+  });
+  return ans;
+};

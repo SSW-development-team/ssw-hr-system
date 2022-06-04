@@ -20,6 +20,8 @@ import { textWithoutBotFillter } from './filter/textWithoutBotFillter';
 import { textFilter } from './filter/textFilter';
 import { booleanFilter } from './filter/booleanFilter';
 import BooleanSelect from './filter/BooleanSelect';
+import { EditableCell } from './EditableCell';
+import { CheckboxCell } from './CheckboxCell';
 
 export default function UserTable(props: {
   users: UserDto[];
@@ -79,64 +81,22 @@ export default function UserTable(props: {
       {
         Header: 'コメント',
         accessor: 'comment',
+        Cell: EditableCell,
       },
       {
         Header: 'CK1',
         accessor: 'check1',
         Filter: BooleanSelect,
         filter: 'booleanFilter',
+        Cell: CheckboxCell,
         maxWidth: 30,
       },
     ],
     []
   );
 
-  // Create an editable cell renderer
-  const EditableCell = ({
-    value: initialValue,
-    row: { index },
-    column: { id },
-    updateMyData, // This is a custom function that we supplied to our table instance
-  }: any) => {
-    // We need to keep and update the state of the cell normally
-    const [value, setValue] = React.useState(initialValue);
-
-    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setValue(e.target.value);
-    };
-
-    // We'll only update the external data when the input is blurred
-    const onBlur = () => {
-      updateMyData(index, id, value);
-    };
-
-    // If the initialValue is changed external, sync it up with our state
-    React.useEffect(() => {
-      setValue(initialValue);
-    }, [initialValue]);
-
-    return id == 'comment' ? (
-      <Form.Control
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        className="form-control-plaintext"
-      />
-    ) : id == 'check1' ? (
-      <Form.Check
-        value={value}
-        onChange={onChange}
-        onBlur={onBlur}
-        className="form-control-plaintext text-center"
-      />
-    ) : (
-      <>{value}</>
-    );
-  };
-
   // Set our editable cell renderer as the default Cell renderer
   const defaultColumn = {
-    Cell: EditableCell,
     Filter: DefaultColumnFilter,
   };
 
@@ -195,9 +155,10 @@ export default function UserTable(props: {
   );
 
   useEffect(() => {
-    if (!isSetInitialFilter) {
+    if (!isSetInitialFilter && departments.length > 0 && users.length > 0) {
       setFilter('departments', '*');
       setIssetInitialFilter(true);
+      console.log('why');
     }
   }, [departments, users]);
 

@@ -28,7 +28,7 @@ export default function SelectColumnFilter({
         setFilter(e.target.value || undefined);
       }}
     >
-      <option value="">全て</option>
+      <option value="*">全て</option>
       {options.map((option, i) => (
         <option key={i} value={option}>
           {option}
