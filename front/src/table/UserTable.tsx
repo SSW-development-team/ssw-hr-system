@@ -5,6 +5,8 @@ import { UserDto } from '../dto/UserDto';
 import axios from 'axios';
 import {
   Column,
+  FilterTypes,
+  TableOptions,
   useFilters,
   useFlexLayout,
   useGlobalFilter,
@@ -22,6 +24,7 @@ import { booleanFilter } from './filter/booleanFilter';
 import BooleanSelect from './filter/BooleanSelect';
 import { EditableCell } from './EditableCell';
 import { CheckboxCell } from './CheckboxCell';
+import { IdCell } from './IdCell';
 
 export default function UserTable(props: {
   users: UserDto[];
@@ -53,6 +56,7 @@ export default function UserTable(props: {
         Header: 'ID',
         accessor: 'id',
         maxWidth: 105,
+        Cell: IdCell,
       },
       {
         Header: 'ユーザ名',
@@ -100,7 +104,7 @@ export default function UserTable(props: {
     Filter: DefaultColumnFilter,
   };
 
-  const updateMyData = (rowIndex: number, columnId: string, value: any) => {
+  const updateMyData = (rowIndex: number, columnId: string, value: string) => {
     // We also turn on the flag to not reset the page
     const newUsers = users.map((row, index) => {
       if (index === rowIndex) {
@@ -119,7 +123,7 @@ export default function UserTable(props: {
     );
   };
 
-  const filterTypes = React.useMemo(
+  const filterTypes: FilterTypes<SerializedUserDto> = React.useMemo(
     () => ({
       text: textFilter,
       textWithoutBot: textWithoutBotFillter,
@@ -128,7 +132,7 @@ export default function UserTable(props: {
     []
   );
 
-  const tableProps: any = {
+  const tableProps: TableOptions<SerializedUserDto> = {
     columns,
     data,
     defaultColumn,

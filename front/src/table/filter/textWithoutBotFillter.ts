@@ -1,10 +1,13 @@
-export const textWithoutBotFillter = (
-  rows: any,
-  id: any,
-  filterValue: string
+import { FilterType } from 'react-table';
+import { SerializedUserDto } from '../../dto/SerializedUserDto';
+
+export const textWithoutBotFillter: FilterType<SerializedUserDto> = (
+  rows,
+  columnIds,
+  filterValue
 ) => {
-  return rows.filter((row: any) => {
-    const rowValue: string = row.values[id];
+  return rows.filter((row) => {
+    const rowValue = row.values[columnIds[0]];
     if (rowValue === undefined) return true;
     if (filterValue == '*') return !inIngnoreDepartment(rowValue);
     if (IGNORE_DEPARTMENTS.includes(filterValue))
