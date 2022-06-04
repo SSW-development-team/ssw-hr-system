@@ -43,7 +43,7 @@ app.use((err: any, req: Express.Request, res: Express.Response) => {
   res.render('error');
 });
 
-export const AppDataSource = new DataSource({
+export const dataSource = new DataSource({
   type: 'mysql',
   host: process.env.DB_HOST,
   port: 3306,
@@ -58,7 +58,8 @@ export const AppDataSource = new DataSource({
 // to initialize initial connection with the database, register all entities
 // and "synchronize" database schema, call "initialize()" method of a newly created database
 // once in your application bootstrap
-AppDataSource.initialize()
+dataSource
+  .initialize()
   .then(() => {
     // here you can start to work with your database
   })
