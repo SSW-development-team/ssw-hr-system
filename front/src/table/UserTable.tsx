@@ -54,7 +54,7 @@ export default function UserTable(props: {
       {
         Header: 'ID',
         accessor: 'id',
-        maxWidth: 140,
+        maxWidth: 160,
       },
       {
         Header: 'ユーザ名',
