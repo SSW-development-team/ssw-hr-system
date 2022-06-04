@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import React, { useMemo, useEffect, useState } from 'react';
-import { Form, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { UserDto } from '../dto/UserDto';
 import axios from 'axios';
 import {
@@ -24,7 +24,6 @@ import { booleanFilter } from './filter/booleanFilter';
 import BooleanSelect from './filter/BooleanSelect';
 import { EditableCell } from './EditableCell';
 import { CheckboxCell } from './CheckboxCell';
-import { IdCell } from './IdCell';
 
 export default function UserTable(props: {
   users: UserDto[];
@@ -55,8 +54,7 @@ export default function UserTable(props: {
       {
         Header: 'ID',
         accessor: 'id',
-        maxWidth: 105,
-        Cell: IdCell,
+        maxWidth: 140,
       },
       {
         Header: 'ユーザ名',
@@ -69,23 +67,25 @@ export default function UserTable(props: {
       {
         Header: '参加日',
         accessor: 'joined_at',
-        maxWidth: 60,
+        maxWidth: 85,
       },
       {
         Header: '脱退日',
         accessor: 'left_at',
-        maxWidth: 60,
+        maxWidth: 85,
       },
       {
         Header: '部門',
         accessor: 'departments',
         Filter: SelectColumnFilter,
         filter: 'textWithoutBot',
+        width: 300,
       },
       {
         Header: 'コメント',
         accessor: 'comment',
         Cell: EditableCell,
+        width: 600,
       },
       {
         Header: 'CK1',
@@ -93,7 +93,7 @@ export default function UserTable(props: {
         Filter: BooleanSelect,
         filter: 'booleanFilter',
         Cell: CheckboxCell,
-        maxWidth: 30,
+        maxWidth: 50,
       },
     ],
     []
@@ -173,7 +173,14 @@ export default function UserTable(props: {
           {headerGroups.map((headerGroup) => (
             <tr {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th {...column.getHeaderProps()}>
+                <th
+                  {...column.getHeaderProps({
+                    style: {
+                      minWidth: column.minWidth,
+                      maxWidth: column.maxWidth,
+                    },
+                  })}
+                >
                   <div
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                   >
@@ -207,7 +214,15 @@ export default function UserTable(props: {
             return (
               <tr {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td {...cell.getCellProps()} className="align-middle p-0">
+                  <td
+                    {...cell.getCellProps({
+                      style: {
+                        minWidth: cell.column.minWidth,
+                        maxWidth: cell.column.maxWidth,
+                      },
+                    })}
+                    className="align-middle p-0"
+                  >
                     {cell.render('Cell')}
                   </td>
                 ))}
