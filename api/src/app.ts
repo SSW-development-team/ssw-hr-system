@@ -5,7 +5,7 @@ import compression from 'compression';
 import { DataSource } from 'typeorm';
 import dotenv from 'dotenv';
 import createError from 'http-errors';
-import router from './route/router';
+import router from './route/users';
 import cors from 'cors';
 import 'reflect-metadata';
 import User from './model/User';
@@ -28,6 +28,11 @@ app.use(compression()); // gzip圧縮して返す
 // apiルータへ
 app.use('/', router);
 app.use('/', departmentsRouter);
+
+// Root Endpoint
+router.get('/', (req, res) => {
+  res.status(200).send('Welcome to SSW HR System API server!');
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => next(createError(404)));

@@ -6,11 +6,6 @@ import User from '../model/User';
 
 const router = express.Router();
 
-// Root Endpoint
-router.get('/', (req, res) => {
-  res.status(200).send('Welcome to SSW HR System API server!');
-});
-
 router.get('/users', async (req, res) => {
   if (!dataSource.isInitialized) await dataSource.initialize();
   res.status(200).send(await dataSource.manager.find(User));
