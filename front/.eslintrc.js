@@ -18,7 +18,5 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: ['react', '@typescript-eslint'],
-  rules: {
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-  },
+  rules: {},
 };
