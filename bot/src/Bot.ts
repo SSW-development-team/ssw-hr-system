@@ -1,4 +1,3 @@
-import axios from 'axios';
 import dayjs from 'dayjs';
 import { Client, Guild, GuildMember, Intents, TextChannel } from 'discord.js';
 import apiClient from './apiClient';

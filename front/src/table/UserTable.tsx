@@ -1,8 +1,7 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useEffect, useState } from 'react';
+import React, { useMemo, useEffect, useState, useCallback } from 'react';
 import { Table } from 'react-bootstrap';
 import { UserDto } from '../dto/UserDto';
-import axios from 'axios';
 import {
   Column,
   FilterTypes,
@@ -10,6 +9,7 @@ import {
   useFilters,
   useFlexLayout,
   useGlobalFilter,
+  UseGlobalFiltersInstanceProps,
   useSortBy,
   useTable,
 } from 'react-table';
@@ -24,6 +24,8 @@ import { booleanFilter } from './filter/booleanFilter';
 import BooleanSelect from './filter/BooleanSelect';
 import { EditableCell } from './EditableCell';
 import { CheckboxCell } from './CheckboxCell';
+import client from '../client';
+import { reEnrollFilter } from './filter/reEnrollFilter';
 
 export default function UserTable(props: {
   users: UserDto[];
@@ -32,6 +34,7 @@ export default function UserTable(props: {
 }) {
   const { users, setUsers, departments } = props;
   const [isSetInitialFilter, setIssetInitialFilter] = useState(false);
+  // const filterdUsers: SerializedUserDto[] = useMemo(() => {});
   const data: SerializedUserDto[] = useMemo(
     () =>
       users.map((user) => ({
@@ -117,13 +120,10 @@ export default function UserTable(props: {
     });
     setUsers(newUsers);
     const user = newUsers[rowIndex];
-    axios.patch(
-      (process.env.REACT_APP_SERVER_URL ?? 'SERVER_URL') + '/users/' + user.id,
-      { [columnId]: value }
-    );
+    client.patch('/users/' + user.id, { [columnId]: value });
   };
 
-  const filterTypes: FilterTypes<SerializedUserDto> = React.useMemo(
+  const filterTypes: FilterTypes<SerializedUserDto> = useMemo(
     () => ({
       text: textFilter,
       textWithoutBot: textWithoutBotFillter,
@@ -132,12 +132,13 @@ export default function UserTable(props: {
     []
   );
 
-  const tableProps: TableOptions<SerializedUserDto> = {
+  const tableOptions: TableOptions<SerializedUserDto> = {
     columns,
     data,
     defaultColumn,
     updateMyData,
     filterTypes,
+    globalFilter: reEnrollFilter,
   };
 
   const {
@@ -147,11 +148,10 @@ export default function UserTable(props: {
     rows,
     prepareRow,
     state,
-    preGlobalFilteredRows,
     setGlobalFilter,
     setFilter,
   } = useTable<SerializedUserDto>(
-    tableProps,
+    tableOptions,
     useFilters, // useFilters!
     useGlobalFilter,
     useSortBy,
@@ -162,7 +162,6 @@ export default function UserTable(props: {
     if (!isSetInitialFilter && departments.length > 0 && users.length > 0) {
       setFilter('departments', '*');
       setIssetInitialFilter(true);
-      console.log('why');
     }
   }, [departments, users]);
 
@@ -185,15 +184,11 @@ export default function UserTable(props: {
                     {...column.getHeaderProps(column.getSortByToggleProps())}
                   >
                     {column.render('Header')}
-                    <span>
-                      {column.isSorted
-                        ? column.isSortedDesc
-                          ? ' 🔽'
-                          : ' 🔼'
-                        : ''}
+                    <span className="mr-1">
+                      {column.isSorted && (column.isSortedDesc ? '🔽' : '🔼')}
                     </span>
                   </div>
-                  <div>{column.canFilter ? column.render('Filter') : null}</div>
+                  <div>{column.canFilter && column.render('Filter')}</div>
                 </th>
               ))}
             </tr>
@@ -201,7 +196,6 @@ export default function UserTable(props: {
           <tr>
             <th colSpan={columns.length}>
               <GlobalFilter
-                preGlobalFilteredRows={preGlobalFilteredRows}
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
               />

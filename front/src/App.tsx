@@ -3,25 +3,17 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Container } from 'react-bootstrap';
 import { UserDto } from './dto/UserDto';
-import axios from 'axios';
 import { DepartmentDto } from './dto/DepartmentDto';
 import UserTable from './table/UserTable';
+import client from './client';
 
 function App() {
-  const [users, setUsers] = useState(new Array<UserDto>());
-  const [departments, setDepartments] = useState(new Array<DepartmentDto>());
+  const [users, setUsers] = useState<UserDto[]>([]);
+  const [departments, setDepartments] = useState<DepartmentDto[]>([]);
 
   useEffect(() => {
-    axios
-      .get((process.env.REACT_APP_SERVER_URL ?? 'SERVER_URL') + '/users')
-      .then((res) => {
-        setUsers(res.data);
-      });
-    axios
-      .get((process.env.REACT_APP_SERVER_URL ?? 'SERVER_URL') + '/departments')
-      .then((res) => {
-        setDepartments(res.data);
-      });
+    client.get('/users').then((res) => setUsers(res.data));
+    client.get('/departments').then((res) => setDepartments(res.data));
   }, []);
 
   return (

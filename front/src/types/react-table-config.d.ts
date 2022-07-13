@@ -126,4 +126,10 @@ declare module 'react-table' {
       UseGroupByRowProps<D>,
       UseRowSelectRowProps<D>,
       UseRowStateRowProps<D> {}
+
+  export type GlobalFilterType<D> = (
+    rows: Row<D>[],
+    columnIds: IdType<D>[],
+    filterValue: any
+  ) => Row<D>[];
 }

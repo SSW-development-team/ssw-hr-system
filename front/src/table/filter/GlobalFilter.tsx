@@ -1,27 +1,27 @@
 import { Form } from 'react-bootstrap';
-import React, { useState } from 'react';
-import { useAsyncDebounce } from 'react-table';
+import React, { useEffect, useState } from 'react';
+import {
+  useAsyncDebounce,
+  UseGlobalFiltersInstanceProps,
+  UseGlobalFiltersState,
+} from 'react-table';
 
-export default function GlobalFilter({
-  preGlobalFilteredRows,
-  globalFilter,
+export default function GlobalFilter<D extends Record<string, any>>({
   setGlobalFilter,
-}: any) {
-  const count = preGlobalFilteredRows.length;
-  const [value, setValue] = useState(globalFilter);
-  const onChange = useAsyncDebounce((value) => {
-    setGlobalFilter(value || undefined);
-  }, 200);
+}: Pick<UseGlobalFiltersInstanceProps<D>, 'setGlobalFilter'> &
+  UseGlobalFiltersState<D>) {
+  const [value, setValue] = useState(false);
+  const onChange = (value: boolean) => {
+    setValue(value ?? false);
+    setGlobalFilter(value);
+  };
 
   return (
-    <Form.Control
-      value={value || ''}
-      onChange={(e) => {
-        setValue(e.target.value);
-        onChange(e.target.value);
-      }}
-      placeholder={`${count} records...`}
-      style={{ width: '100%' }}
+    <Form.Check
+      id="reEnroll"
+      checked={value}
+      label="再加入者のみ表示"
+      onChange={(e) => onChange(e.target.checked)}
     />
   );
 }
