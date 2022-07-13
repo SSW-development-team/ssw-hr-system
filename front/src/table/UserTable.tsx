@@ -139,6 +139,7 @@ export default function UserTable(props: {
     updateMyData,
     filterTypes,
     globalFilter: reEnrollFilter,
+    autoResetFilters: false,
   };
 
   const {
