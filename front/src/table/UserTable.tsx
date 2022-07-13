@@ -57,6 +57,7 @@ export default function UserTable(props: {
       {
         Header: 'ID',
         accessor: 'id',
+        minWidth: 160,
         maxWidth: 160,
       },
       {
@@ -216,7 +217,7 @@ export default function UserTable(props: {
                         maxWidth: cell.column.maxWidth,
                       },
                     })}
-                    className="align-middle p-0"
+                    className="d-flex align-items-center p-0"
                   >
                     {cell.render('Cell')}
                   </td>
