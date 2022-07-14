@@ -16,7 +16,7 @@ import {
 import { SerializedUserDto } from '../dto/SerializedUserDto';
 import { DepartmentDto } from '../dto/DepartmentDto';
 import SelectColumnFilter from './filter/SelectColumnFilter';
-import GlobalFilter from './filter/GlobalFilter';
+import GlobalFilter, { GlobalFilterValue } from './filter/GlobalFilter';
 import DefaultColumnFilter from './filter/DefaultColumnFilter';
 import { textWithoutBotFillter } from './filter/textWithoutBotFillter';
 import { textFilter } from './filter/textFilter';
@@ -141,6 +141,9 @@ export default function UserTable(props: {
     filterTypes,
     globalFilter: reEnrollFilter,
     autoResetFilters: false,
+    initialState: {
+      globalFilter: { reEnroll: false, isExist: true } as GlobalFilterValue,
+    },
   };
 
   const {
