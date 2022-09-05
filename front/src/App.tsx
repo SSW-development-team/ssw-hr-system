@@ -7,7 +7,7 @@ import { DepartmentDto } from './dto/DepartmentDto';
 import UserTable from './table/UserTable';
 import client from './client';
 
-function App() {
+function App(): JSX.Element {
   const [users, setUsers] = useState<UserDto[]>([]);
   const [departments, setDepartments] = useState<DepartmentDto[]>([]);
 

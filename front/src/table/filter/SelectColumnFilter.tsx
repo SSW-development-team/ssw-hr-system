@@ -2,16 +2,18 @@
 
 import React, { useMemo } from 'react';
 import { Form } from 'react-bootstrap';
+import { FilterProps } from 'react-table';
+import { SerializedUserDto } from '../../dto/SerializedUserDto';
 
 // a unique option from a list
 export default function SelectColumnFilter({
   column: { filterValue, setFilter, preFilteredRows, id },
-}: any) {
+}: FilterProps<SerializedUserDto>): JSX.Element {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = useMemo(() => {
     const options = new Set<string>();
-    preFilteredRows.forEach((row: any) => {
+    preFilteredRows.forEach((row) => {
       String(row.values[id])
         .split(',')
         .forEach((o: string) => options.add(o));

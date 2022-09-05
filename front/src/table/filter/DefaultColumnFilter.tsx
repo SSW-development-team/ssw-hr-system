@@ -1,9 +1,11 @@
 import Form from 'react-bootstrap/esm/Form';
 import React from 'react';
+import { SerializedUserDto } from '../../dto/SerializedUserDto';
+import { FilterProps } from 'react-table';
 
 export default function DefaultColumnFilter({
   column: { filterValue, setFilter },
-}: any) {
+}: FilterProps<SerializedUserDto>): JSX.Element {
   return (
     <Form.Control
       value={filterValue || ''}

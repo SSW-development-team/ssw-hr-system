@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useEffect, useState, useCallback } from 'react';
+import React, { useMemo, useEffect, useState } from 'react';
 import { Table } from 'react-bootstrap';
 import { UserDto } from '../dto/UserDto';
 import {
@@ -9,7 +9,6 @@ import {
   useFilters,
   useFlexLayout,
   useGlobalFilter,
-  UseGlobalFiltersInstanceProps,
   useSortBy,
   useTable,
 } from 'react-table';
@@ -31,7 +30,7 @@ export default function UserTable(props: {
   users: UserDto[];
   setUsers: (users: UserDto[]) => void;
   departments: DepartmentDto[];
-}) {
+}): JSX.Element {
   const { users, setUsers, departments } = props;
   const [isSetInitialFilter, setIssetInitialFilter] = useState(false);
   // const filterdUsers: SerializedUserDto[] = useMemo(() => {});
@@ -52,7 +51,7 @@ export default function UserTable(props: {
     [users]
   );
 
-  const columns: Column<SerializedUserDto>[] = useMemo(
+  const columns = useMemo<Column<SerializedUserDto>[]>(
     () => [
       {
         Header: 'ID',

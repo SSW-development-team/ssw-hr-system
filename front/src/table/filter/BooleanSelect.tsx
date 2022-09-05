@@ -2,11 +2,13 @@
 
 import React, { useMemo } from 'react';
 import { Form } from 'react-bootstrap';
+import { FilterProps } from 'react-table';
+import { SerializedUserDto } from '../../dto/SerializedUserDto';
 
 // a unique option from a list
 export default function BooleanSelect({
   column: { filterValue, setFilter },
-}: any) {
+}: FilterProps<SerializedUserDto>): JSX.Element {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = useMemo(() => ['true', 'false'], []);

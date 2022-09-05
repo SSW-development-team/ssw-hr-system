@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Form } from 'react-bootstrap';
+import { CellProps } from 'react-table';
+import { SerializedUserDto } from '../dto/SerializedUserDto';
 
 // Create an editable cell renderer
 export const EditableCell = ({
@@ -7,7 +9,7 @@ export const EditableCell = ({
   row: { index },
   column: { id },
   updateMyData, // This is a custom function that we supplied to our table instance
-}: any) => {
+}: CellProps<SerializedUserDto>): JSX.Element => {
   // We need to keep and update the state of the cell normally
   const [value, setValue] = useState(initialValue);
 

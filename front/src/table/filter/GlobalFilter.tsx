@@ -9,7 +9,7 @@ import {
 export default function GlobalFilter<D extends Record<string, any>>({
   setGlobalFilter,
 }: Pick<UseGlobalFiltersInstanceProps<D>, 'setGlobalFilter'> &
-  UseGlobalFiltersState<D>) {
+  UseGlobalFiltersState<D>): JSX.Element {
   const [reEnroll, setReEnroll] = useState(false);
   const [isExist, setIsExist] = useState(true);
 
