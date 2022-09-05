@@ -5,7 +5,7 @@ import Department from './Department';
 @Entity()
 export default class User {
   @PrimaryColumn({
-    length: 18,
+    length: 19,
   })
   id: string;
 
