@@ -36,20 +36,25 @@ router.post('/users', async (req, res) => {
       );
   } catch (error) {
     console.error(error);
-    res.status(400).send({ code: 404, message: 'Bad request' });
+    res.status(400).send({ code: 500, message: 'Internal server error' });
   }
 });
 
 router.patch('/users/:id', async (req, res) => {
-  if (!dataSource.isInitialized) await dataSource.initialize();
-  res
-    .status(200)
-    .send(
-      await dataSource.manager.save(
-        User,
-        userMap(req.body, new User(req.params.id))
-      )
-    );
+  try {
+    if (!dataSource.isInitialized) await dataSource.initialize();
+    res
+      .status(200)
+      .send(
+        await dataSource.manager.save(
+          User,
+          userMap(req.body, new User(req.params.id))
+        )
+      );
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ code: 500, message: 'Internal server error' });
+  }
 });
 
 function userMap(req: UserDto, user: User) {
