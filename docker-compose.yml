@@ -20,7 +20,8 @@ services:
     working_dir: "/usr/src"
     ports:
       - "3000:3000"
-    command: sh -c "yarn && yarn dev"
+    # command: sh -c "yarn && yarn dev" # Hot-reload active
+    command: sh -c "yarn && yarn start" # Hot-reload disabled, comforable when you want to change model schemes
     # tty: true # when you want to create db migration, set this true and comment out "yarn dev"
     depends_on:
       - db

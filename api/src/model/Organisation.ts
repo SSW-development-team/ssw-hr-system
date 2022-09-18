@@ -14,11 +14,11 @@ export default class Organisation {
   @ManyToOne(() => Department)
   member_role: Department;
 
-  @ManyToOne(() => Organisation)
+  @ManyToOne(() => Organisation, (org) => org.subsets)
   super?: Organisation;
 
-  // @OneToMany(() => Organisation, (org) => org.super)
-  // subsets: Organisation[] = [];
+  @OneToMany(() => Organisation, (org) => org.super)
+  subsets!: Organisation[];
 
   constructor(
     id: number,
