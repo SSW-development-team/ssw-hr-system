@@ -25,7 +25,7 @@ export default class User {
 
   @ManyToMany(() => Department, { eager: true })
   @JoinTable()
-  departments?: Department[];
+  departments!: Department[];
 
   @Column({ default: false })
   check1?: boolean;
@@ -40,5 +40,9 @@ export default class User {
       this.left_at == null ||
       dayjs(this.joined_at).isAfter(dayjs(this.left_at))
     );
+  }
+
+  public getDepartmentIds() {
+    return this.departments.map((d) => d.id);
   }
 }

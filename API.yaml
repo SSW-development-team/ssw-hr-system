@@ -120,6 +120,26 @@ paths:
                 items:
                   $ref: '#/components/schemas/Organization'
       operationId: get-organizations
+    post:
+      summary: ''
+      operationId: post-organizations
+      responses:
+        '200':
+          description: OK
+      requestBody:
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/OrganizationBase'
+                - type: object
+                  properties:
+                    super_org_id:
+                      type: string
+                    boss_role_id:
+                      type: string
+                    member_role_id:
+                      type: string
 components:
   schemas:
     User:
@@ -146,22 +166,44 @@ components:
           type: array
           items:
             type: integer
-    Organization:
-      title: Organization
+    OrganizationBase:
+      title: OrganizationBase
       x-stoplight:
         id: m0hb384vjlx0h
       type: object
       properties:
         name:
           type: string
-        boss_id:
+    Organization:
+      title: Organization
+      x-stoplight:
+        id: 30j3sjyvm2dl4
+      allOf:
+        - $ref: '#/components/schemas/OrganizationBase'
+        - type: object
+          properties:
+            id:
+              type: string
+            boss_role:
+              $ref: '#/components/schemas/Role'
+            member_role:
+              $ref: '#/components/schemas/Role'
+            subsets:
+              type: array
+              items:
+                $ref: '#/components/schemas/Organization'
+    Role:
+      title: Role
+      x-stoplight:
+        id: kuh7zkvjxvx84
+      type: object
+      properties:
+        id:
           type: string
-        member_ids:
+        name:
+          type: string
+        user_ids:
           type: array
           items:
             type: string
-        subsets:
-          type: array
-          items:
-            $ref: '#/components/schemas/Organization'
   securitySchemes: {}

@@ -9,6 +9,8 @@ export default class Department {
   @Column()
   name?: string;
 
+  user_ids: string[] = [];
+
   constructor(id: string) {
     this.id = id;
   }

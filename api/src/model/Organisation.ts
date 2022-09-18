@@ -2,14 +2,18 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
+  Tree,
+  TreeChildren,
+  TreeParent,
 } from 'typeorm';
 import Department from './Department';
+import User from './User';
 @Entity()
+@Tree('nested-set')
 export default class Organisation {
   @PrimaryGeneratedColumn()
-  id: number;
+  id!: number;
 
   @Column()
   name: string;
@@ -20,21 +24,23 @@ export default class Organisation {
   @ManyToOne(() => Department)
   member_role: Department;
 
-  @ManyToOne(() => Organisation, (org) => org.subsets)
-  super?: Organisation;
+  @TreeParent()
+  super!: Organisation;
 
-  @OneToMany(() => Organisation, (org) => org.super)
+  @TreeChildren()
   subsets!: Organisation[];
 
-  constructor(
-    id: number,
-    name: string,
-    boss_role: Department,
-    member_role: Department
-  ) {
-    this.id = id;
+  constructor(name: string, boss_role: Department, member_role: Department) {
     this.name = name;
     this.boss_role = boss_role;
     this.member_role = member_role;
+  }
+
+  public sinkUser(user: User) {
+    const roleIds = new Set(user.getDepartmentIds());
+    if (roleIds.has(this.boss_role.id)) this.boss_role.user_ids.push(user.id);
+    if (roleIds.has(this.member_role.id))
+      this.member_role.user_ids.push(user.id);
+    this.subsets.forEach((o) => o.sinkUser(user));
   }
 }
