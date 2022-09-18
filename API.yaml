@@ -2,12 +2,18 @@ openapi: 3.0.0
 x-stoplight:
   id: xvjyl3m0cino3
 info:
-  title: User
-  version: "1.0"
+  title: SSW HRMS API
+  version: 1.1.0
+  description: SSW HRMS API
+  contact:
+    name: PIC
+    email: Ysiki.Shokurin@gmail.com
+  license:
+    name: MIT
 servers:
-  - url: "http://localhost:3000"
+  - url: 'http://localhost:3000'
 paths:
-  "/users/{userId}":
+  '/users/{userId}':
     parameters:
       - schema:
           type: integer
@@ -19,23 +25,14 @@ paths:
       summary: Get User Info by User ID
       tags: []
       responses:
-        "200":
+        '200':
           description: User Found
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-              examples:
-                example-1:
-                  value:
-                    id: "123456789012345678"
-                    name: string
-                    joined_at: "2019-08-24"
-                    left_at: "2019-08-24"
-                    comment: string
-                    departments:
-                      - 0
-        "404":
+                $ref: '#/components/schemas/User'
+              examples: {}
+        '404':
           description: User Not Found
       operationId: get-users-userId
       description: Retrieve the information of the user with the matching user ID.
@@ -43,123 +40,92 @@ paths:
       summary: Update User Information
       operationId: patch-users-userId
       responses:
-        "200":
+        '200':
           description: User Updated
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
-              examples:
-                Updated User Rebecca Baker:
-                  value:
-                    id: 13
-                    firstName: Rebecca
-                    lastName: Baker
-                    email: rebecca@gmail.com
-                    dateOfBirth: "1985-10-02"
-                    emailVerified: false
-                    createDate: "2019-08-24"
-        "404":
+                $ref: '#/components/schemas/User'
+              examples: {}
+        '404':
           description: User Not Found
-        "409":
+        '409':
           description: Email Already Taken
       description: Update the information of an existing user.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
-            examples:
-              Update First Name:
-                value:
-                  firstName: Rebecca
-              Update Email:
-                value:
-                  email: rebecca@gmail.com
-              Update Last Name & Date of Birth:
-                value:
-                  lastName: Baker
-                  dateOfBirth: "1985-10-02"
+              $ref: '#/components/schemas/User'
+            examples: {}
         description: Patch user properties to update.
   /users:
     post:
       summary: Create New User
       operationId: post-user
       responses:
-        "200":
+        '200':
           description: User Created
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/User"
+                $ref: '#/components/schemas/User'
               examples:
                 example-1:
                   value:
-                    id: "123456789012345678"
+                    id: '123456789012345678'
                     name: string
-                    joined_at: "2019-08-24"
-                    left_at: "2019-08-24"
+                    joined_at: '2019-08-24'
+                    left_at: '2019-08-24'
                     comment: string
                     departments:
                       - 0
-        "400":
+        '400':
           description: Missing Required Information
-        "409":
+        '409':
           description: Email Already Taken
       description: Create a new user.
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User"
-            examples:
-              example-1:
-                value:
-                  id: "123456789012345678"
-                  name: string
-                  joined_at: "2019-08-24"
-                  left_at: "2019-08-24"
-                  comment: string
-                  departments:
-                    - 0
-        description: ""
+              $ref: '#/components/schemas/User'
+            examples: {}
+        description: ''
     parameters: []
     get:
-      summary: ""
+      summary: ''
       operationId: get-users
       responses:
-        "200":
+        '200':
           description: OK
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schemas/User"
-              examples:
-                example-1:
-                  value:
-                    - id: "123456789012345678"
-                      name: string
-                      joined_at: "2019-08-24"
-                      left_at: "2019-08-24"
-                      comment: string
-                      departments:
-                        - 0
+                  $ref: '#/components/schemas/User'
+              examples: {}
+  /organizations:
+    get:
+      summary: Your GET endpoint
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Organization'
+      operationId: get-organizations
 components:
   schemas:
     User:
       title: User
       type: object
-      description: ""
-      examples:
-        - id: "123456789012345678"
-          name: string
-          joined_at: "2019-08-24"
-          left_at: "2019-08-24"
-          comment: string
-          departments:
-            - 0
+      description: ''
       properties:
         id:
           type: string
@@ -180,4 +146,22 @@ components:
           type: array
           items:
             type: integer
+    Organization:
+      title: Organization
+      x-stoplight:
+        id: m0hb384vjlx0h
+      type: object
+      properties:
+        name:
+          type: string
+        boss_id:
+          type: string
+        member_ids:
+          type: array
+          items:
+            type: string
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/Organization'
   securitySchemes: {}
