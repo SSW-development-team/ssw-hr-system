@@ -1,7 +1,7 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/bin/www",
   "license": "MIT",
   "scripts": {
     "dev": "ts-node-dev --poll ./src/bin/www",
