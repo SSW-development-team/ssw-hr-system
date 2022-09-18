@@ -7,7 +7,10 @@
     "dev": "ts-node-dev --poll ./src/bin/www",
     "start": "ts-node ./src/bin/www",
     "build": "tsc",
-    "typeorm": "typeorm-ts-node-commonjs -d ./src/app.ts"
+    "typeorm-base": "typeorm-ts-node-commonjs -d ./src/data-source.ts",
+    "mig:gen": "yarn typeorm-base migration:generate",
+    "mig:run": "yarn typeorm-base migration:run",
+    "mig:show": "yarn typeorm-base migration:show"
   },
   "dependencies": {
     "compression": "^1.7.4",

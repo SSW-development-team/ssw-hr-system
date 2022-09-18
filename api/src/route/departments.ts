@@ -1,12 +1,12 @@
 import express from 'express';
-import { dataSource } from '../app';
+import { AppDataSource } from '../data-source';
 import Department from '../model/Department';
 
 const departmentsRouter = express.Router();
 
 departmentsRouter.get('/departments', async (req, res) => {
-  if (!dataSource.isInitialized) await dataSource.initialize();
-  res.status(200).send(await dataSource.manager.find(Department));
+  if (!AppDataSource.isInitialized) await AppDataSource.initialize();
+  res.status(200).send(await AppDataSource.manager.find(Department));
 });
 
 export default departmentsRouter;

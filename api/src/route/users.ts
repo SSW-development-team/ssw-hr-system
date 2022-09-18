@@ -1,5 +1,5 @@
 import express from 'express';
-import { dataSource } from '../app';
+import { AppDataSource } from '../data-source';
 import { UserDto } from '../dto/UserDto';
 import Department from '../model/Department';
 import User from '../model/User';
@@ -7,13 +7,13 @@ import User from '../model/User';
 const router = express.Router();
 
 router.get('/users', async (req, res) => {
-  if (!dataSource.isInitialized) await dataSource.initialize();
-  res.status(200).send(await dataSource.manager.find(User));
+  if (!AppDataSource.isInitialized) await AppDataSource.initialize();
+  res.status(200).send(await AppDataSource.manager.find(User));
 });
 
 router.get('/users/:id', async (req, res) => {
-  if (!dataSource.isInitialized) await dataSource.initialize();
-  const user = await dataSource.manager.findOneBy(User, {
+  if (!AppDataSource.isInitialized) await AppDataSource.initialize();
+  const user = await AppDataSource.manager.findOneBy(User, {
     id: req.params.id,
   });
   if (user == null) {
@@ -25,11 +25,11 @@ router.get('/users/:id', async (req, res) => {
 
 router.post('/users', async (req, res) => {
   try {
-    if (!dataSource.isInitialized) await dataSource.initialize();
+    if (!AppDataSource.isInitialized) await AppDataSource.initialize();
     res
       .status(200)
       .send(
-        await dataSource.manager.save(
+        await AppDataSource.manager.save(
           User,
           userMap(req.body, new User(req.body.id))
         )
@@ -42,11 +42,11 @@ router.post('/users', async (req, res) => {
 
 router.patch('/users/:id', async (req, res) => {
   try {
-    if (!dataSource.isInitialized) await dataSource.initialize();
+    if (!AppDataSource.isInitialized) await AppDataSource.initialize();
     res
       .status(200)
       .send(
-        await dataSource.manager.save(
+        await AppDataSource.manager.save(
           User,
           userMap(req.body, new User(req.params.id))
         )

@@ -21,6 +21,7 @@ services:
     ports:
       - "3000:3000"
     command: sh -c "yarn && yarn dev"
+    # tty: true # when you want to create db migration, set this true and comment out "yarn dev"
     depends_on:
       - db
     environment:
