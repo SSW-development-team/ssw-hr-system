@@ -7,7 +7,7 @@ export default {
   mode: 'production',
 
   // 魔法のコード これを書くと Can't resolve 'fs' が消える
-  target: 'node',
+  target: 'node16',
 
   // メインとなるJavaScriptファイル（エントリーポイント）
   entry: './handler.ts',
