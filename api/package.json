@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --poll ./src/bin/www",
     "start": "ts-node ./src/bin/www",
     "build": "tsc",
-    "typeorm": "typeorm-ts-node-commonjs"
+    "typeorm": "typeorm-ts-node-commonjs -d ./src/app.ts"
   },
   "dependencies": {
     "compression": "^1.7.4",
