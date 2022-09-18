@@ -9,6 +9,7 @@ import cors from 'cors';
 import 'reflect-metadata';
 import departmentsRouter from './route/departments';
 import { AppDataSource } from './data-source';
+import organisationsRouter from './route/organisations';
 
 // envファイルの読み込み
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(compression()); // gzip圧縮して返す
 // apiルータへ
 app.use('/', router);
 app.use('/', departmentsRouter);
+app.use('/', organisationsRouter);
 
 // Root Endpoint
 router.get('/', (req, res) => {

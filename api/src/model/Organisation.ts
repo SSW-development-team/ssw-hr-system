@@ -1,8 +1,14 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import Department from './Department';
 @Entity()
 export default class Organisation {
-  @PrimaryColumn()
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
