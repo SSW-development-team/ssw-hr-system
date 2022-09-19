@@ -178,7 +178,7 @@ export default function UserTable(props: {
 
   return (
     <TableContainer component={Paper}>
-      <Table {...getTableProps()}>
+      <Table {...getTableProps()} size="small" padding="none">
         <TableHead>
           {headerGroups.map((headerGroup) => (
             <TableRow {...headerGroup.getHeaderGroupProps()}>
@@ -206,12 +206,12 @@ export default function UserTable(props: {
             </TableRow>
           ))}
           <TableRow>
-            <th colSpan={columns.length}>
+            <TableCell component="th" colSpan={columns.length} padding="normal">
               <GlobalFilter
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
               />
-            </th>
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody {...getTableBodyProps()}>

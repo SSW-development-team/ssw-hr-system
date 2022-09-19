@@ -4,6 +4,7 @@ import { UserDto } from './dto/UserDto';
 import { DepartmentDto } from './dto/DepartmentDto';
 import UserTable from './table/UserTable';
 import client from '../../util/client';
+import { Typography } from '@mui/material';
 
 function Index(): JSX.Element {
   const [users, setUsers] = useState<UserDto[]>([]);
@@ -16,7 +17,9 @@ function Index(): JSX.Element {
 
   return (
     <>
-      <h2>名簿</h2>
+      <Typography variant="h3" m={2}>
+        名簿
+      </Typography>
       <UserTable
         users={users}
         setUsers={setUsers}

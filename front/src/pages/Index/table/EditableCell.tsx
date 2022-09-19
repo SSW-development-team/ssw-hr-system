@@ -28,5 +28,13 @@ export const EditableCell = ({
     setValue(initialValue);
   }, [initialValue]);
 
-  return <TextField value={value} onChange={onChange} onBlur={onBlur} />;
+  return (
+    <TextField
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+      size="small"
+      fullWidth
+    />
+  );
 };

@@ -8,7 +8,6 @@ import {
   IconButton,
   Typography,
   Button,
-  Container,
 } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
@@ -34,10 +33,7 @@ function App(): JSX.Element {
           </Toolbar>
         </AppBar>
       </Box>
-      <Container>
-        <h1>SSW 人事管理システム3</h1>
-        <Outlet />
-      </Container>
+      <Outlet />
     </>
   );
 }

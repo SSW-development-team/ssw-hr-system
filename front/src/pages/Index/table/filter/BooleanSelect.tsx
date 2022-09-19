@@ -19,6 +19,7 @@ export default function BooleanSelect({
       select
       value={filterValue}
       onChange={(e) => setFilter(e.target.value || undefined)}
+      size="small"
     >
       <MenuItem value="">全て</MenuItem>
       {options.map((option, i) => (
