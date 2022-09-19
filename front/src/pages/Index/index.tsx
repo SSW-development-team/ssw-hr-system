@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UserDto } from './dto/UserDto';
 import { DepartmentDto } from './dto/DepartmentDto';
 import UserTable from './table/UserTable';

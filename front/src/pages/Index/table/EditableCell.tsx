@@ -1,5 +1,5 @@
 import { TextField } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { CellProps } from 'react-table';
 import { SerializedUserDto } from '../dto/SerializedUserDto';
 

@@ -1,7 +1,7 @@
 // This is a custom filter UI for selecting
 
 import { MenuItem, TextField } from '@mui/material';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { FilterProps } from 'react-table';
 import { SerializedUserDto } from '../../dto/SerializedUserDto';
 

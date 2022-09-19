@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-key */
-import React, { useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect, useState } from 'react';
 import { UserDto } from '../dto/UserDto';
 import {
   Column,
