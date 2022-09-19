@@ -22,7 +22,7 @@ import { booleanFilter } from './filter/booleanFilter';
 import BooleanSelect from './filter/BooleanSelect';
 import { EditableCell } from './EditableCell';
 import { CheckboxCell } from './CheckboxCell';
-import client from '../client';
+import client from '../../../util/client';
 import { reEnrollFilter } from './filter/reEnrollFilter';
 import {
   Paper,
@@ -41,7 +41,6 @@ export default function UserTable(props: {
 }): JSX.Element {
   const { users, setUsers, departments } = props;
   const [isSetInitialFilter, setIssetInitialFilter] = useState(false);
-  // const filterdUsers: SerializedUserDto[] = useMemo(() => {});
   const data: SerializedUserDto[] = useMemo(
     () =>
       users.map((user) => ({

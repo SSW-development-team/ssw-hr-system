@@ -1,9 +1,9 @@
 /* eslint-disable react/jsx-key */
 import React, { useEffect, useState } from 'react';
-import { UserDto } from '../dto/UserDto';
-import { DepartmentDto } from '../dto/DepartmentDto';
-import UserTable from '../table/UserTable';
-import client from '../client';
+import { UserDto } from './dto/UserDto';
+import { DepartmentDto } from './dto/DepartmentDto';
+import UserTable from './table/UserTable';
+import client from '../../util/client';
 
 function Index(): JSX.Element {
   const [users, setUsers] = useState<UserDto[]>([]);
