@@ -16,13 +16,13 @@ export default class Organisation {
   id!: number;
 
   @Column()
-  name: string;
+  name!: string;
 
   @ManyToOne(() => Department)
-  boss_role: Department;
+  boss_role!: Department;
 
   @ManyToOne(() => Department)
-  member_role: Department;
+  member_role!: Department;
 
   @TreeParent()
   super!: Organisation;
@@ -33,12 +33,6 @@ export default class Organisation {
   // カスタム属性
   boss = { role_name: '', user_id: undefined as string | undefined };
   member = { role_name: '', user_ids: [] as string[] };
-
-  constructor(name: string, boss_role: Department, member_role: Department) {
-    this.name = name;
-    this.boss_role = boss_role;
-    this.member_role = member_role;
-  }
 
   public sinkUser(user: User) {
     this.boss.role_name = this.boss_role.name ?? '';
