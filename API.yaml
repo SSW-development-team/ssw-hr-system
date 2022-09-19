@@ -116,9 +116,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Organization'
+                $ref: '#/components/schemas/AA'
       operationId: get-organizations
     post:
       summary: ''
@@ -192,6 +190,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Organization'
+      description: ''
     Role:
       title: Role
       x-stoplight:
@@ -206,4 +205,30 @@ components:
           type: array
           items:
             type: string
+    AA:
+      title: AA
+      x-stoplight:
+        id: bgm7de3vw16gm
+      type: object
+      properties:
+        boss:
+          type: object
+          properties:
+            user_id:
+              type: string
+            role_name:
+              type: string
+        member:
+          type: object
+          properties:
+            user_ids:
+              type: array
+              items:
+                type: string
+            role_name:
+              type: string
+        subsets:
+          type: array
+          items:
+            $ref: '#/components/schemas/AA'
   securitySchemes: {}

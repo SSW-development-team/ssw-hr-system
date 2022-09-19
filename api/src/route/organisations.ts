@@ -19,15 +19,3 @@ organisationsRouter.get('/organizations', async (_, res) => {
 });
 
 export default organisationsRouter;
-
-// const getRecursiveObj = <K extends string>(
-//   key: K,
-//   child: any,
-//   level: number
-// ): Record<K, any> =>
-//   [...Array(level)].reduce(
-//     (acc) => ({
-//       [key]: acc,
-//     }),
-//     child
-//   );

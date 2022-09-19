@@ -30,6 +30,10 @@ export default class Organisation {
   @TreeChildren()
   subsets!: Organisation[];
 
+  // カスタム属性
+  boss = { role_name: '', user_id: undefined as string | undefined };
+  member = { role_name: '', user_ids: [] as string[] };
+
   constructor(name: string, boss_role: Department, member_role: Department) {
     this.name = name;
     this.boss_role = boss_role;
@@ -37,10 +41,11 @@ export default class Organisation {
   }
 
   public sinkUser(user: User) {
+    this.boss.role_name = this.boss_role.name ?? '';
+    this.member.role_name = this.member_role.name ?? '';
     const roleIds = new Set(user.getDepartmentIds());
-    if (roleIds.has(this.boss_role.id)) this.boss_role.user_ids.push(user.id);
-    if (roleIds.has(this.member_role.id))
-      this.member_role.user_ids.push(user.id);
+    if (roleIds.has(this.boss_role.id)) this.boss.user_id = user.id;
+    if (roleIds.has(this.member_role.id)) this.member.user_ids.push(user.id);
     this.subsets.forEach((o) => o.sinkUser(user));
   }
 }
