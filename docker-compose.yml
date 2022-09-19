@@ -8,10 +8,11 @@ services:
     working_dir: "/usr/src"
     command: sh -c "yarn && yarn start"
     ports:
-      - "80:3000"
+      - "3000:3000"
     environment:
-      REACT_APP_SERVER_URL: "http://localhost:3000"
+      REACT_APP_SERVER_URL: "http://localhost:4000"
       CHOKIDAR_USEPOLLING: true
+      WATCHPACK_POLLING: true
   api:
     image: node:16
     volumes:
@@ -19,17 +20,18 @@ services:
       - api_modules:/usr/src/node_modules #node_modulesはコンテナ内部で用意します
     working_dir: "/usr/src"
     ports:
-      - "3000:3000"
+      - "4000:4000"
     command: sh -c "yarn && yarn dev" # Hot-reload active
     # command: sh -c "yarn && yarn start" # Hot-reload disabled, comforable when you want to change model schemes
     # tty: true # when you want to create db migration, set this true and comment out "yarn dev"
     depends_on:
       - db
     environment:
-      CLIENT_ORIGIN_URL: "http://localhost"
+      CLIENT_ORIGIN_URL: "http://localhost:3000"
       DB_HOST: "db"
       DB_USERNAME: "root"
       DB_PASSWORD: "docker"
+      PORT: 4000
   bot:
     image: node:16
     volumes:
@@ -40,7 +42,7 @@ services:
     depends_on:
       - api
     environment:
-      API_URL: "http://api:3000"
+      API_URL: "http://api:4000"
   db:
     image: mysql:8
     container_name: db-container
