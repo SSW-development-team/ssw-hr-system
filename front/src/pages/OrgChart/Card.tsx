@@ -1,24 +1,26 @@
-import { Avatar, Grid, Paper, Stack, Typography } from '@mui/material';
+import { Avatar, Paper, Stack, Typography } from '@mui/material';
 
-export default function Card(
-  rolename: string,
-  user: { name: string; img?: string }
-) {
+type Props = {
+  rolename: string;
+  user: { name: string; img?: string };
+};
+const CARD_WIDTH = '300px';
+export default function Card(props: Props) {
+  const { user, rolename } = props;
   return (
-    <Paper>
-      <Grid container spacing={2}>
-        <Grid xs={4}>
+    <Stack direction="row" justifyContent="center" alignItems="center">
+      <Paper sx={{ width: CARD_WIDTH }}>
+        <Stack direction="row" spacing={2} sx={{ width: CARD_WIDTH }}>
           <Avatar
-            src={user.img ?? 'https://mui.com/static/images/avatar/1.jpg'}
+            src="https://mui.com/static/images/avatar/1.jpg"
+            sx={{ width: 50, height: 50 }}
           />
-        </Grid>
-        <Grid xs={8}>
-          <Stack>
+          <Stack textAlign="left">
             <Typography>{user.name}</Typography>
             <Typography>{rolename}</Typography>
           </Stack>
-        </Grid>
-      </Grid>
-    </Paper>
+        </Stack>
+      </Paper>
+    </Stack>
   );
 }
