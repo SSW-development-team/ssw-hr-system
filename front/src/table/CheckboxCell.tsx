@@ -1,5 +1,5 @@
+import { Checkbox } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { CellProps } from 'react-table';
 import { SerializedUserDto } from '../dto/SerializedUserDto';
 
@@ -24,11 +24,5 @@ export const CheckboxCell = ({
     setValue(initialValue);
   }, [initialValue]);
 
-  return (
-    <Form.Check
-      checked={value}
-      onChange={onChange}
-      className="form-control-plaintext text-center"
-    />
-  );
+  return <Checkbox checked={value} onChange={onChange} />;
 };

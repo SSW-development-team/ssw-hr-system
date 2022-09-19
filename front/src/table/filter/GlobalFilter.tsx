@@ -1,9 +1,9 @@
-import { Col, Container, Form, Row } from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 import {
   UseGlobalFiltersInstanceProps,
   UseGlobalFiltersState,
 } from 'react-table';
+import { Checkbox, FormControlLabel } from '@mui/material';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default function GlobalFilter<D extends Record<string, any>>({
@@ -23,26 +23,34 @@ export default function GlobalFilter<D extends Record<string, any>>({
   );
 
   return (
-    <Container fluid>
-      <Row>
-        <Col xs="auto">
-          <Form.Check
+    <div>
+      <div>
+        <div>
+          <FormControlLabel
             id="reEnroll"
-            checked={reEnroll}
             label="再加入者のみ表示"
-            onChange={(e) => setReEnroll(e.target.checked)}
+            control={
+              <Checkbox
+                checked={reEnroll}
+                onChange={(e) => setReEnroll(e.target.checked)}
+              />
+            }
           />
-        </Col>
-        <Col xs="auto">
-          <Form.Check
+        </div>
+        <div>
+          <FormControlLabel
             id="isExist"
-            checked={isExist}
             label="在籍者のみ表示"
-            onChange={(e) => setIsExist(e.target.checked)}
+            control={
+              <Checkbox
+                checked={isExist}
+                onChange={(e) => setIsExist(e.target.checked)}
+              />
+            }
           />
-        </Col>
-      </Row>
-    </Container>
+        </div>
+      </div>
+    </div>
   );
 }
 

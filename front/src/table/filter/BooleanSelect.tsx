@@ -1,7 +1,7 @@
 // This is a custom filter UI for selecting
 
+import { MenuItem, TextField } from '@mui/material';
 import React, { useMemo } from 'react';
-import { Form } from 'react-bootstrap';
 import { FilterProps } from 'react-table';
 import { SerializedUserDto } from '../../dto/SerializedUserDto';
 
@@ -15,19 +15,17 @@ export default function BooleanSelect({
 
   // Render a multi-select box
   return (
-    <Form.Select
+    <TextField
+      select
       value={filterValue}
-      onChange={(e) => {
-        setFilter(e.target.value || undefined);
-      }}
-      className="px-0"
+      onChange={(e) => setFilter(e.target.value || undefined)}
     >
-      <option value="">全て</option>
+      <MenuItem value="">全て</MenuItem>
       {options.map((option, i) => (
-        <option key={i} value={option}>
+        <MenuItem key={i} value={option}>
           {option}
-        </option>
+        </MenuItem>
       ))}
-    </Form.Select>
+    </TextField>
   );
 }

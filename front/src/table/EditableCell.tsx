@@ -1,5 +1,5 @@
+import { TextField } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
 import { CellProps } from 'react-table';
 import { SerializedUserDto } from '../dto/SerializedUserDto';
 
@@ -28,12 +28,5 @@ export const EditableCell = ({
     setValue(initialValue);
   }, [initialValue]);
 
-  return (
-    <Form.Control
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      className="form-control-plaintext"
-    />
-  );
+  return <TextField value={value} onChange={onChange} onBlur={onBlur} />;
 };

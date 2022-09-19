@@ -1,6 +1,5 @@
 /* eslint-disable react/jsx-key */
 import React, { useMemo, useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
 import { UserDto } from '../dto/UserDto';
 import {
   Column,
@@ -25,6 +24,15 @@ import { EditableCell } from './EditableCell';
 import { CheckboxCell } from './CheckboxCell';
 import client from '../client';
 import { reEnrollFilter } from './filter/reEnrollFilter';
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 
 export default function UserTable(props: {
   users: UserDto[];
@@ -170,13 +178,14 @@ export default function UserTable(props: {
   }, [departments, users]);
 
   return (
-    <div className="table-responsive-sm">
-      <Table striped bordered hover {...getTableProps()} size={'sm'}>
-        <thead>
+    <TableContainer component={Paper}>
+      <Table {...getTableProps()}>
+        <TableHead>
           {headerGroups.map((headerGroup) => (
-            <tr {...headerGroup.getHeaderGroupProps()}>
+            <TableRow {...headerGroup.getHeaderGroupProps()}>
               {headerGroup.headers.map((column) => (
-                <th
+                <TableCell
+                  component="th"
                   {...column.getHeaderProps({
                     style: {
                       minWidth: column.minWidth,
@@ -193,26 +202,26 @@ export default function UserTable(props: {
                     </span>
                   </div>
                   <div>{column.canFilter && column.render('Filter')}</div>
-                </th>
+                </TableCell>
               ))}
-            </tr>
+            </TableRow>
           ))}
-          <tr>
+          <TableRow>
             <th colSpan={columns.length}>
               <GlobalFilter
                 globalFilter={state.globalFilter}
                 setGlobalFilter={setGlobalFilter}
               />
             </th>
-          </tr>
-        </thead>
-        <tbody {...getTableBodyProps()}>
+          </TableRow>
+        </TableHead>
+        <TableBody {...getTableBodyProps()}>
           {rows.map((row) => {
             prepareRow(row);
             return (
-              <tr {...row.getRowProps()}>
+              <TableRow {...row.getRowProps()}>
                 {row.cells.map((cell) => (
-                  <td
+                  <TableCell
                     {...cell.getCellProps({
                       style: {
                         minWidth: cell.column.minWidth,
@@ -222,13 +231,13 @@ export default function UserTable(props: {
                     className="d-flex align-items-center p-0"
                   >
                     {cell.render('Cell')}
-                  </td>
+                  </TableCell>
                 ))}
-              </tr>
+              </TableRow>
             );
           })}
-        </tbody>
+        </TableBody>
       </Table>
-    </div>
+    </TableContainer>
   );
 }
