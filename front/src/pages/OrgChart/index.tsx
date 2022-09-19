@@ -70,5 +70,9 @@ export default function OrgChart() {
   );
 
   if (org === undefined || users == undefined) return <CircularProgress />;
-  return <Box mt="2rem">{renderOrg(org, 0, renderOrgChildren)}</Box>;
+  return (
+    <Box mt="2rem" overflow="scroll" minHeight="90vh">
+      {renderOrg(org, 0, renderOrgChildren)}
+    </Box>
+  );
 }
