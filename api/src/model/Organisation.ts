@@ -39,7 +39,11 @@ export default class Organisation {
     this.member.role_name = this.member_role.name ?? '';
     const roleIds = new Set(user.getDepartmentIds());
     if (roleIds.has(this.boss_role.id)) this.boss.user_id = user.id;
-    if (roleIds.has(this.member_role.id)) this.member.user_ids.push(user.id);
+    if (
+      roleIds.has(this.member_role.id) &&
+      !this.subsets.some((so) => roleIds.has(so.boss_role.id))
+    )
+      this.member.user_ids.push(user.id);
     this.subsets.forEach((o) => o.sinkUser(user));
   }
 }
