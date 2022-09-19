@@ -6,9 +6,20 @@ import User from '../model/User';
 
 const organisationsRouter = express.Router();
 
-organisationsRouter.get('/organizations', async (_, res) => {
+organisationsRouter.get('/organizations', async (req, res) => {
   if (!AppDataSource.isInitialized) await AppDataSource.initialize();
   const { manager } = AppDataSource;
+  const { type } = req.query;
+  if (type === 'list') {
+    res
+      .status(200)
+      .send(
+        await manager.find(Organisation, {
+          relations: ['boss_role', 'member_role'],
+        })
+      );
+    return;
+  }
   const orgs = await manager.getTreeRepository(Organisation).findTrees({
     relations: ['boss_role', 'member_role'],
   });

@@ -118,6 +118,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/AA'
       operationId: get-organizations
+      parameters:
+        - schema:
+            type: string
+          in: query
+          name: type
+          description: 'tree, list is supported'
+      description: ''
     post:
       summary: ''
       operationId: post-organizations

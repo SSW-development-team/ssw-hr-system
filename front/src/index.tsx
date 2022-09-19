@@ -5,6 +5,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Index from './pages/Index';
 import OrgChart from './pages/OrgChart';
 import { StrictMode } from 'react';
+import OrgCreate from './pages/OrgCreate';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,7 +22,16 @@ const router = createBrowserRouter([
       },
       {
         path: 'organisations',
-        element: <OrgChart />,
+        children: [
+          {
+            path: '',
+            element: <OrgChart />,
+          },
+          {
+            path: 'create',
+            element: <OrgCreate />,
+          },
+        ],
       },
     ],
   },

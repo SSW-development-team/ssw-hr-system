@@ -1,4 +1,6 @@
 export type OrganisationDto = {
+  id: string;
+  name: string;
   boss: {
     user_id: string;
     role_name: string;
