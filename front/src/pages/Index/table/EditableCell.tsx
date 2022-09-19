@@ -1,7 +1,7 @@
 import { TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { CellProps } from 'react-table';
-import { SerializedUserDto } from '../dto/SerializedUserDto';
+import { SerializedUserDto } from '../../../dto/SerializedUserDto';
 
 // Create an editable cell renderer
 export const EditableCell = ({

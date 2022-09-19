@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-key */
 import { useMemo, useEffect, useState } from 'react';
-import { UserDto } from '../dto/UserDto';
+import { UserDto } from '../../../dto/UserDto';
 import {
   Column,
   FilterTypes,
@@ -11,8 +11,8 @@ import {
   useSortBy,
   useTable,
 } from 'react-table';
-import { SerializedUserDto } from '../dto/SerializedUserDto';
-import { DepartmentDto } from '../dto/DepartmentDto';
+import { SerializedUserDto } from '../../../dto/SerializedUserDto';
+import { DepartmentDto } from '../../../dto/DepartmentDto';
 import SelectColumnFilter from './filter/SelectColumnFilter';
 import GlobalFilter, { GlobalFilterValue } from './filter/GlobalFilter';
 import DefaultColumnFilter from './filter/DefaultColumnFilter';

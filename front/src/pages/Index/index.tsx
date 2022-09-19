@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-key */
 import { useEffect, useState } from 'react';
-import { UserDto } from './dto/UserDto';
-import { DepartmentDto } from './dto/DepartmentDto';
+import { UserDto } from '../../dto/UserDto';
+import { DepartmentDto } from '../../dto/DepartmentDto';
 import UserTable from './table/UserTable';
 import client from '../../util/client';
 import { Typography } from '@mui/material';

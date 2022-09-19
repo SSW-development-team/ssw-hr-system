@@ -3,7 +3,7 @@
 import { MenuItem, TextField } from '@mui/material';
 import { useMemo } from 'react';
 import { FilterProps } from 'react-table';
-import { SerializedUserDto } from '../../dto/SerializedUserDto';
+import { SerializedUserDto } from '../../../../dto/SerializedUserDto';
 
 // a unique option from a list
 export default function SelectColumnFilter({

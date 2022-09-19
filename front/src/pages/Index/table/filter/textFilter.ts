@@ -1,5 +1,5 @@
 import { FilterType } from 'react-table';
-import { SerializedUserDto } from '../../dto/SerializedUserDto';
+import { SerializedUserDto } from '../../../../dto/SerializedUserDto';
 
 export const textFilter: FilterType<SerializedUserDto> = (
   rows,

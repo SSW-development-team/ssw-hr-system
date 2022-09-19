@@ -1,4 +1,4 @@
-import { SerializedUserDto } from '../../dto/SerializedUserDto';
+import { SerializedUserDto } from '../../../../dto/SerializedUserDto';
 import { FilterProps } from 'react-table';
 import { TextField } from '@mui/material';
 

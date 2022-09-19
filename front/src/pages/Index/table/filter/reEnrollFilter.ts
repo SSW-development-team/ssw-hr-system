@@ -1,6 +1,6 @@
 import dayjs from 'dayjs';
 import { GlobalFilterType } from 'react-table';
-import { SerializedUserDto } from '../../dto/SerializedUserDto';
+import { SerializedUserDto } from '../../../../dto/SerializedUserDto';
 import { GlobalFilterValue } from './GlobalFilter';
 
 export const reEnrollFilter: GlobalFilterType<SerializedUserDto> = (
