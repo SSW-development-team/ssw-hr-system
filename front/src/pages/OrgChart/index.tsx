@@ -50,24 +50,22 @@ export default function OrgChart() {
   );
 
   const renderOrgChildren = useCallback(
-    (org: OrganisationDto, level: number) => {
-      return (
-        <>
-          {org.member.user_ids.map((id) => (
-            <TreeNode
-              key={id}
-              label={
-                <Card
-                  rolename={org.member.role_name}
-                  user={{ name: getUserById(id)?.username ?? '不明' }}
-                />
-              }
-            />
-          ))}
-          {org.subsets.map((so) => renderOrg(so, level + 1, renderOrgChildren))}
-        </>
-      );
-    },
+    (org: OrganisationDto, level: number) => (
+      <>
+        {org.member.user_ids.map((id) => (
+          <TreeNode
+            key={id}
+            label={
+              <Card
+                rolename={org.member.role_name}
+                user={{ name: getUserById(id)?.username ?? '不明' }}
+              />
+            }
+          />
+        ))}
+        {org.subsets.map((so) => renderOrg(so, level + 1, renderOrgChildren))}
+      </>
+    ),
     [getUserById, renderOrg]
   );
 
