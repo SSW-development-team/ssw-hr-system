@@ -8,10 +8,13 @@ export default class Department {
 
   @Column()
   name?: string;
+  @Column({ default: true })
+  hide: boolean;
 
   user_ids: string[] = [];
 
   constructor(id: string) {
     this.id = id;
+    this.hide = true;
   }
 }

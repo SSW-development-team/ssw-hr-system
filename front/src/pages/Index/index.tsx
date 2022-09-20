@@ -11,8 +11,10 @@ function Index(): JSX.Element {
   const [departments, setDepartments] = useState<DepartmentDto[]>([]);
 
   useEffect(() => {
-    client.get('/users').then((res) => setUsers(res.data));
-    client.get('/departments').then((res) => setDepartments(res.data));
+    client.get<UserDto[]>('/users').then((res) => setUsers(res.data));
+    client
+      .get<DepartmentDto[]>('/departments')
+      .then((res) => setDepartments(res.data.filter((d) => !d.hide)));
   }, []);
 
   return (
