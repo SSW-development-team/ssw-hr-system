@@ -6,4 +6,5 @@ export interface UserDtoBase {
   left_at?: string;
   comment?: string;
   check1?: boolean;
+  icon_url: string;
 }

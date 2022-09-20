@@ -83,6 +83,7 @@ export default class Bot {
       id: member.id,
       username: member.user.username,
       displayName: member.displayName,
+      icon_url: member.displayAvatarURL(),
       joined_at: dayjs(member.joinedAt).format(DATE_FORMAT),
       departments: departments
         .map((d) => d.id)

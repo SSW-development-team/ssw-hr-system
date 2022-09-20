@@ -7,4 +7,5 @@ export type UserDto = {
   comment?: string;
   departments?: string[];
   check1?: boolean;
+  icon_url: string;
 };

@@ -30,11 +30,13 @@ export default function OrgChart() {
 
   const renderOrg = useCallback(
     (org: OrganisationDto, level: number, renderOrgChildren: OrgRender) => {
+      const boss = getUserById(org.boss.user_id);
       const BossCard = (
         <Card
           rolename={org.boss.role_name}
           user={{
-            name: getUserById(org.boss.user_id)?.username ?? '不明',
+            name: boss?.username ?? '不明',
+            img: boss?.icon_url,
           }}
           horizontal={true} // 上司の場合は部下が多いので横表示
         />
@@ -55,18 +57,21 @@ export default function OrgChart() {
   const renderOrgChildren = useCallback(
     (org: OrganisationDto, level: number) => (
       <>
-        {org.member.user_ids.map((id) => (
-          <TreeNode
-            key={id}
-            label={
-              <Card
-                rolename={org.member.role_name}
-                user={{ name: getUserById(id)?.username ?? '不明' }}
-                horizontal={level < 1}
-              />
-            }
-          />
-        ))}
+        {org.member.user_ids.map((id) => {
+          const user = getUserById(id);
+          return (
+            <TreeNode
+              key={id}
+              label={
+                <Card
+                  rolename={org.member.role_name}
+                  user={{ name: user?.username ?? '不明', img: user?.icon_url }}
+                  horizontal={level < 1}
+                />
+              }
+            />
+          );
+        })}
         {org.subsets.map((so) => renderOrg(so, level, renderOrgChildren))}
       </>
     ),

@@ -30,6 +30,9 @@ export default class User {
   @Column({ default: false })
   check1?: boolean;
 
+  @Column()
+  icon_url!: string;
+
   constructor(id: string) {
     this.id = id;
   }
