@@ -54,6 +54,7 @@ export default function UserTable(props: {
           ? user.departments?.map((d) => d.name).join(',')
           : '',
         check1: user.check1,
+        icon_url: user.icon_url,
       })),
     [users]
   );
@@ -174,7 +175,7 @@ export default function UserTable(props: {
       setFilter('departments', '*');
       setIssetInitialFilter(true);
     }
-  }, [departments, users]);
+  }, [departments, isSetInitialFilter, setFilter, users]);
 
   return (
     <TableContainer component={Paper}>

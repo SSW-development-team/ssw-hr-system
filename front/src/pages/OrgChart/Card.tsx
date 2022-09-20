@@ -12,21 +12,18 @@ export default function Card(props: Props) {
     <Stack justifyContent="center" alignItems="center">
       <Paper>
         <Stack direction={horizontal ? 'row' : 'column'} spacing={0.5}>
-          <Avatar
-            src="https://mui.com/static/images/avatar/1.jpg"
-            sx={{ width: 50, height: 50 }}
-          />
+          <Avatar src={user.img} sx={{ width: 50, height: 50 }} />
           <Stack
             textAlign="left"
             direction={horizontal ? 'column' : 'row-reverse'}
           >
             <Typography
-              sx={horizontal ? undefined : { 'writing-mode': 'vertical-rl' }}
+              sx={horizontal ? undefined : { writingMode: 'vertical-rl' }}
             >
               {user.name}
             </Typography>
             <Typography
-              sx={horizontal ? undefined : { 'writing-mode': 'vertical-rl' }}
+              sx={horizontal ? undefined : { writingMode: 'vertical-rl' }}
             >
               {rolename}
             </Typography>

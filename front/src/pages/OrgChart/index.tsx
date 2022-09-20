@@ -20,11 +20,7 @@ export default function OrgChart() {
   }, []);
 
   const getUserById = useCallback(
-    (id: string) => {
-      const res = users.find((u) => u.id === id);
-      console.log(id, res);
-      return res;
-    },
+    (id: string) => users.find((u) => u.id === id),
     [users]
   );
 
@@ -46,7 +42,7 @@ export default function OrgChart() {
           {renderOrgChildren(org, level + 1)}
         </Tree>
       ) : (
-        <TreeNode label={BossCard}>
+        <TreeNode label={BossCard} key={org.id}>
           {renderOrgChildren(org, level + 1)}
         </TreeNode>
       );
