@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @Entity()
 export default class Department {
   @PrimaryColumn({
-    length: 18,
+    length: 19,
   })
   id: string;
 
