@@ -36,14 +36,17 @@ export default function OrgChart() {
           user={{
             name: getUserById(org.boss.user_id)?.username ?? '不明',
           }}
+          horizontal={true} // 上司の場合は部下が多いので横表示
         />
       );
       return level === 0 ? (
         <Tree label={BossCard} lineWidth="2px" lineBorderRadius={'10px'}>
-          {renderOrgChildren(org, level)}
+          {renderOrgChildren(org, level + 1)}
         </Tree>
       ) : (
-        <TreeNode label={BossCard}>{renderOrgChildren(org, level)}</TreeNode>
+        <TreeNode label={BossCard}>
+          {renderOrgChildren(org, level + 1)}
+        </TreeNode>
       );
     },
     [getUserById]
@@ -59,11 +62,12 @@ export default function OrgChart() {
               <Card
                 rolename={org.member.role_name}
                 user={{ name: getUserById(id)?.username ?? '不明' }}
+                horizontal={level < 1}
               />
             }
           />
         ))}
-        {org.subsets.map((so) => renderOrg(so, level + 1, renderOrgChildren))}
+        {org.subsets.map((so) => renderOrg(so, level, renderOrgChildren))}
       </>
     ),
     [getUserById, renderOrg]

@@ -11,13 +11,11 @@ organisationsRouter.get('/organizations', async (req, res) => {
   const { manager } = AppDataSource;
   const { type } = req.query;
   if (type === 'list') {
-    res
-      .status(200)
-      .send(
-        await manager.find(Organisation, {
-          relations: ['boss_role', 'member_role'],
-        })
-      );
+    res.status(200).send(
+      await manager.find(Organisation, {
+        relations: ['boss_role', 'member_role'],
+      })
+    );
     return;
   }
   const orgs = await manager.getTreeRepository(Organisation).findTrees({
@@ -25,7 +23,7 @@ organisationsRouter.get('/organizations', async (req, res) => {
   });
   const users = await manager.find(User);
   const root = orgs[0];
-  users.forEach((u) => root.sinkUser(u));
+  users.filter((u) => u.isAlive()).forEach((u) => root.sinkUser(u));
   res.status(200).send(root);
 });
 
